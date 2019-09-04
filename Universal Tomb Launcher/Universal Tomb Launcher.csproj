@@ -38,11 +38,11 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormSetupPrompt.cs">
+    <Compile Include="FormSetupSplash.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormSetupPrompt.Designer.cs">
-      <DependentUpon>FormSetupPrompt.cs</DependentUpon>
+    <Compile Include="FormSetupSplash.Designer.cs">
+      <DependentUpon>FormSetupSplash.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -59,8 +59,8 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormSetupPrompt.resx">
-      <DependentUpon>FormSetupPrompt.cs</DependentUpon>
+    <EmbeddedResource Include="FormSetupSplash.resx">
+      <DependentUpon>FormSetupSplash.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
