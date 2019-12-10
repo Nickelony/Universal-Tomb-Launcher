@@ -56,10 +56,6 @@ namespace UniversalTombLauncher
 					throw new ArgumentException("Couldn't find a valid game .exe file.");
 				else
 				{
-					// Install border fix for tomb4 games if it wasn't installed yet
-					if (Path.GetFileName(validExeFilePath).ToLower() == "tomb4.exe" && IsRequiredWindowsVersion() && !IsBorderFixInstalled())
-						InstallBorderFix();
-
 					using (FormSetupSplash form = new FormSetupSplash(Path.GetDirectoryName(validExeFilePath)))
 					{
 						if (form.ShowDialog() == DialogResult.OK) // Pressed CTRL
@@ -166,85 +162,10 @@ namespace UniversalTombLauncher
 				Directory.Delete(logsDirectory);
 		}
 
-		private static void InstallBorderFix()
-		{
-			string sdbFilePath = Path.Combine(Path.GetTempPath(), "tr4-border-fix.sdb");
-
-			using (FileStream fileStream = System.IO.File.Create(sdbFilePath))
-				Assembly.GetExecutingAssembly().GetManifestResourceStream("UniversalTombLauncher.Patches.tr4-border-fix.sdb").CopyTo(fileStream);
-
-			ProcessStartInfo startInfo = new ProcessStartInfo
-			{
-				FileName = "sdbinst.exe",
-				Arguments = "-q \"" + sdbFilePath + "\""
-			};
-
-			try
-			{
-				Process process = Process.Start(startInfo);
-				process.WaitForExit();
-			}
-			finally
-			{
-				if (System.IO.File.Exists(sdbFilePath))
-					System.IO.File.Delete(sdbFilePath);
-			}
-		}
-
 		private static bool IsValidGameExeFile(string file)
 		{
 			string fileName = Path.GetFileName(file).ToLower();
 			return fileName == "tomb2.exe" || fileName == "tomb3.exe" || fileName == "tomb4.exe" || fileName == "pctomb5.exe";
-		}
-
-		private static bool IsBorderFixInstalled()
-		{
-			string seriesPatchName = "Tomb Raider series fullscreen border fix"; // A patch by Garrett from PCGamingWiki
-			string tr4PatchName = "Tomb Raider 4 Fullscreen Border Fix"; // My own patch which only affects tomb4.exe files
-
-			string displayName = string.Empty;
-
-			string registryKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
-			RegistryKey key = Registry.LocalMachine.OpenSubKey(registryKey);
-
-			if (key != null)
-			{
-				foreach (RegistryKey subkey in key.GetSubKeyNames().Select(keyName => key.OpenSubKey(keyName)))
-				{
-					displayName = (string)subkey.GetValue("DisplayName");
-
-					if (displayName != null && (displayName == seriesPatchName || displayName == tr4PatchName))
-						return true;
-				}
-
-				key.Close();
-			}
-
-			registryKey = @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall";
-			key = Registry.LocalMachine.OpenSubKey(registryKey);
-
-			if (key != null)
-			{
-				foreach (RegistryKey subkey in key.GetSubKeyNames().Select(keyName => key.OpenSubKey(keyName)))
-				{
-					displayName = (string)subkey.GetValue("DisplayName");
-
-					if (displayName != null && (displayName == seriesPatchName || displayName == tr4PatchName))
-						return true;
-				}
-
-				key.Close();
-			}
-
-			return false;
-		}
-
-		private static bool IsRequiredWindowsVersion()
-		{
-			RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
-			string productName = (string)key.GetValue("ProductName");
-
-			return productName.StartsWith("Windows 10") || productName.StartsWith("Windows 8") || productName.StartsWith("Windows 7");
 		}
 	}
 }

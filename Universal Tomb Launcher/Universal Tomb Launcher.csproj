@@ -64,9 +64,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Patches\tr4-border-fix.sdb" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Icons\flep.ico" />
     <Content Include="Icons\flep.png" />
     <Content Include="Icons\tr4.ico" />
