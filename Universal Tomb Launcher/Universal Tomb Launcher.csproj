@@ -52,6 +52,7 @@
     <Compile Include="Helpers\ReflectionHelper.cs" />
     <Compile Include="Helpers\ShellHelper.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="NativeStructs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

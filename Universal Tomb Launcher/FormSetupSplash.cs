@@ -45,6 +45,8 @@ namespace UniversalTombLauncher
 		{
 			base.OnShown(e);
 
+			PerformClick(); // Fix for dgVoodoo's wrong initial window state issue
+
 			timer_Input.Start();
 			timer_Animation.Start();
 		}
@@ -81,6 +83,12 @@ namespace UniversalTombLauncher
 
 			Width = 420;
 			Height = 60;
+		}
+
+		private void PerformClick()
+		{
+			var windowCenterPoint = new Point(Width / 2, Height / 2);
+			NativeMethods.ClickOnPoint(Handle, windowCenterPoint);
 		}
 	}
 }

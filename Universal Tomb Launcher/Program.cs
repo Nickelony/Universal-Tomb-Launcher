@@ -70,7 +70,6 @@ namespace UniversalTombLauncher
 
 			var shortcut = ShellHelper.CreateShortcutWithIcon(exeFilePath, iconLocation);
 			shortcut.Arguments = setup ? "-setup" : string.Empty;
-			shortcut.WindowStyle = 1; // Fix for dgVoodoo's wrong initial window state issue
 			shortcut.Save();
 
 			return shortcut.FullName;
