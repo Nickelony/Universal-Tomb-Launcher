@@ -71,7 +71,7 @@ namespace UniversalTombLauncher.Helpers
 			if (existingLogFiles.Length == 0)
 				return 1;
 
-			List<int> takenNumbers = new List<int>();
+			var takenNumbers = new List<int>();
 
 			foreach (string logFile in existingLogFiles)
 			{

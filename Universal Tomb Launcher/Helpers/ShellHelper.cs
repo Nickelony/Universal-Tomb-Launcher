@@ -12,8 +12,7 @@ namespace UniversalTombLauncher.Helpers
 			var shell = new WshShell();
 			string shortcutPath = Path.Combine(Path.GetTempPath(), fileName + ".lnk");
 
-			IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
-
+			var shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
 			shortcut.TargetPath = exeFilePath;
 			shortcut.WorkingDirectory = Path.GetDirectoryName(exeFilePath);
 			shortcut.IconLocation = iconLocation;

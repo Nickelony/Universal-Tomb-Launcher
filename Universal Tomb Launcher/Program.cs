@@ -51,18 +51,29 @@ namespace UniversalTombLauncher
 		private static void RunGame(string exeFilePath, bool setup = false)
 		{
 			// We must create a shortcut of the game and run it instead to apply the icon of this launcher to the game window
-			var shortcut = ShellHelper.CreateShortcutWithIcon(exeFilePath, Assembly.GetExecutingAssembly().Location);
-			shortcut.Arguments = setup ? "-setup" : string.Empty;
-			shortcut.Save();
+			string shortcutPath = CreateGameShortcut(exeFilePath, setup);
 
-			try { Process.Start(shortcut.FullName).WaitForExit(); }
+			try { Process.Start(shortcutPath).WaitForExit(); }
 			catch { }
 
-			if (File.Exists(shortcut.FullName))
-				File.Delete(shortcut.FullName);
+			if (File.Exists(shortcutPath))
+				File.Delete(shortcutPath);
 
 			string exeDirectory = Path.GetDirectoryName(exeFilePath);
 			LogCleaner.TidyLogFiles(exeDirectory);
+		}
+
+		/// <returns>Path to the shortcut.</returns>
+		private static string CreateGameShortcut(string exeFilePath, bool setup)
+		{
+			string iconLocation = Assembly.GetExecutingAssembly().Location; // Target icon is the icon of this launcher
+
+			var shortcut = ShellHelper.CreateShortcutWithIcon(exeFilePath, iconLocation);
+			shortcut.Arguments = setup ? "-setup" : string.Empty;
+			shortcut.WindowStyle = 1; // Fix for dgVoodoo's wrong initial window state issue
+			shortcut.Save();
+
+			return shortcut.FullName;
 		}
 	}
 }
