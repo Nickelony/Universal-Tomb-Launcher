@@ -35,7 +35,7 @@ Game still running in background message:
 
 ![Message](https://user-images.githubusercontent.com/20436882/142454242-a749c79e-4751-49f9-88da-0fc41d31ae3a.png)
 
-Extra setup window:
+Extra setup window (TR4 only):
 
 ![Fix](https://user-images.githubusercontent.com/20436882/142444048-2e56e25d-de67-4d1d-921c-e28c18f08c28.png)
 
