@@ -31,6 +31,10 @@ Non-Acrylic:
 
 ![Flat](https://user-images.githubusercontent.com/20436882/142443963-e853c0e5-9c8f-464b-9bed-a4645c22a9d5.png)
 
+Game still running in background message:
+
+![Message](https://user-images.githubusercontent.com/20436882/142454242-a749c79e-4751-49f9-88da-0fc41d31ae3a.png)
+
 Extra setup window:
 
 ![Fix](https://user-images.githubusercontent.com/20436882/142444048-2e56e25d-de67-4d1d-921c-e28c18f08c28.png)
