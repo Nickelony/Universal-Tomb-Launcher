@@ -25,4 +25,19 @@ namespace UniversalTombLauncher
 		public uint Time;
 		public IntPtr ExtraInfo;
 	}
+
+	internal unsafe struct WindowCompositionAttributeData
+	{
+		public WCA Attribute;
+		public void* Data;
+		public int DataLength;
+	}
+
+	internal struct AccentPolicy
+	{
+		public ACCENT AccentState;
+		public uint AccentFlags;
+		public uint GradientColor;
+		public uint AnimationId;
+	}
 }

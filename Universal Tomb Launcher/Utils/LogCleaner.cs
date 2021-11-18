@@ -5,20 +5,20 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UniversalTombLauncher.Extensions;
 
-namespace UniversalTombLauncher.Helpers
+namespace UniversalTombLauncher.Utils
 {
 	public static class LogCleaner
 	{
 		private const string CrashLogFileNameTemplate = "Last_Crash_{0}.txt";
 
-		public static void TidyLogFiles(string gameExecutableDirectory)
+		public static void TidyLogFiles(string gameDirectory)
 		{
-			string logsDirectory = Path.Combine(gameExecutableDirectory, "logs");
+			string logsDirectory = Path.Combine(gameDirectory, "logs");
 
 			if (!Directory.Exists(logsDirectory))
 				Directory.CreateDirectory(logsDirectory);
 
-			foreach (string file in Directory.GetFiles(gameExecutableDirectory))
+			foreach (string file in Directory.GetFiles(gameDirectory))
 			{
 				string fileName = Path.GetFileName(file);
 
@@ -39,11 +39,11 @@ namespace UniversalTombLauncher.Helpers
 
 		private static bool IsValidLogFile(string fileName) =>
 			fileName.BulkStringComparision(StringComparison.OrdinalIgnoreCase,
-				"db_patches_crash.bin", "detected crash.txt", "lastextraction.lst")
+				"db_patches_crash.bin", "DETECTED CRASH.txt", "LastExtraction.lst")
 			|| fileName.EndsWith("_warm_up_log.txt", StringComparison.OrdinalIgnoreCase);
 
 		private static bool IsValidNumberedCrashLog(string fileName) =>
-			Regex.IsMatch(fileName, @"last_crash_.*\.txt", RegexOptions.IgnoreCase);
+			Regex.IsMatch(fileName, @"last_crash_\d+\.txt", RegexOptions.IgnoreCase);
 
 		private static void MoveNumberedLog(string logFile, string logsDirectory)
 		{

@@ -4,7 +4,9 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 using UniversalTombLauncher.Enums;
+using UniversalTombLauncher.Forms;
 using UniversalTombLauncher.Helpers;
+using UniversalTombLauncher.Utils;
 
 namespace UniversalTombLauncher
 {
@@ -34,18 +36,43 @@ namespace UniversalTombLauncher
 						return;
 				}
 
-				using (var form = new FormSetupSplash(Path.GetDirectoryName(validExecutable)))
+				string engineDirectory = Path.GetDirectoryName(validExecutable);
+				DialogResult splashResult = ShowSplashScreen(engineDirectory);
+
+				const DialogResult pressedCtrl = DialogResult.OK;
+				const DialogResult timePassed = DialogResult.Cancel;
+
+				if (splashResult == pressedCtrl)
 				{
-					if (form.ShowDialog() == DialogResult.OK) // Pressed CTRL
-						RunGame(validExecutable, true);
-					else // 1 second passed
-						RunGame(validExecutable);
+					if (OSVersionHelper.IsWindowsEightOrNewer() && version == GameVersion.TR4)
+					{
+						DialogResult setupResult = ShowExtraSettingsSetup();
+
+						if (setupResult == DialogResult.Cancel)
+							return; // Don't start the game
+					}
+
+					RunGame(validExecutable, true);
 				}
+				else if (splashResult == timePassed)
+					RunGame(validExecutable);
 			}
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
+		}
+
+		private static DialogResult ShowSplashScreen(string splashImageDirectory)
+		{
+			using (var form = new FormSetupSplash(splashImageDirectory))
+				return form.ShowDialog();
+		}
+
+		private static DialogResult ShowExtraSettingsSetup()
+		{
+			using (var form = new FormExtraSettings())
+				return form.ShowDialog();
 		}
 
 		private static void RunGame(string exeFilePath, bool setup = false)

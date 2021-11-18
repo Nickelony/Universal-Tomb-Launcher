@@ -1,12 +1,16 @@
 ﻿using System;
 using System.IO;
 using UniversalTombLauncher.Enums;
-using UniversalTombLauncher.Extensions;
 
 namespace UniversalTombLauncher.Helpers
 {
 	public static class FileHelper
 	{
+		public static readonly string[] ValidGameExecutableNames = new string[]
+		{
+			"tombati.exe", "Tomb2.exe", "tomb3.exe", "tomb4.exe", "PCTomb5.exe"
+		};
+
 		public static string FindValidGameExecutable(string gameDirectory, out GameVersion version)
 		{
 			string result = null;
@@ -29,8 +33,7 @@ namespace UniversalTombLauncher.Helpers
 		}
 
 		private static bool IsValidGameExecutable(string filePath) =>
-			Path.GetFileName(filePath).BulkStringComparision(StringComparison.OrdinalIgnoreCase,
-				"tombati.exe", "Tomb2.exe", "tomb3.exe", "tomb4.exe", "PCTomb5.exe");
+			Array.Exists(ValidGameExecutableNames, x => x.Equals(Path.GetFileName(filePath), StringComparison.OrdinalIgnoreCase));
 
 		private static GameVersion GetGameVersionFromFile(string filePath)
 		{

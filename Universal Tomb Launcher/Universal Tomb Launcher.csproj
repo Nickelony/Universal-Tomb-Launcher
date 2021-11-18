@@ -7,7 +7,7 @@
     <ProjectGuid>{979017B4-9016-4432-8DAF-4CDFD8C966EB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>UniversalTombLauncher</RootNamespace>
-    <AssemblyName>PLAY</AssemblyName>
+    <AssemblyName>launch</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,6 +31,11 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -40,17 +46,37 @@
   <ItemGroup>
     <Compile Include="Enums\GameVersion.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="FormSetupSplash.cs">
+    <Compile Include="Forms\Bases\FormAcrylic.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormSetupSplash.Designer.cs">
+    <Compile Include="Forms\FormExtraSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormExtraSettings.Designer.cs">
+      <DependentUpon>FormExtraSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Bases\FormNoSystemMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSetupSplash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSetupSplash.Designer.cs">
       <DependentUpon>FormSetupSplash.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\FileHelper.cs" />
-    <Compile Include="Helpers\LogCleaner.cs" />
+    <Compile Include="Helpers\InputHelper.cs" />
+    <Compile Include="Helpers\OSVersionHelper.cs" />
+    <Compile Include="NativeEnums.cs" />
+    <Compile Include="Utils\FullscreenBorderFix.cs" />
+    <Compile Include="Utils\LogCleaner.cs" />
     <Compile Include="Helpers\ProcessHelper.cs" />
     <Compile Include="Helpers\ReflectionHelper.cs" />
     <Compile Include="Helpers\ShellHelper.cs" />
+    <Compile Include="Utils\WindowUtils.cs" />
+    <Compile Include="Controls\HighQualityLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="NativeMethods.cs" />
     <Compile Include="NativeStructs.cs" />
     <Compile Include="Program.cs" />
@@ -68,7 +94,10 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FormSetupSplash.resx">
+    <EmbeddedResource Include="Forms\FormExtraSettings.resx">
+      <DependentUpon>FormExtraSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSetupSplash.resx">
       <DependentUpon>FormSetupSplash.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
@@ -79,6 +108,9 @@
     <Content Include="Icons\tr4.png" />
     <Content Include="Icons\trng.ico" />
     <Content Include="Icons\trng.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Patches\tr4-border-fix.sdb" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
