@@ -16,11 +16,11 @@ A universal launcher for Tomb Raider 1 / 2 / 3 / 4 / 5 which is used in the Tomb
 - Has a new fade-in animation when opened.
 
 # Screenshots
-Dark OS theme:
+Dark OS theme (Rounded corners for Windows 11 only):
 
 ![Dark](https://user-images.githubusercontent.com/20436882/142443882-d7c7287d-1216-465f-8657-be050266931c.png)
 
-Light OS theme:
+Light OS theme (Rounded corners for Windows 11 only):
 
 ![Light](https://user-images.githubusercontent.com/20436882/142443909-8a55f031-ff5a-4040-98df-173bbad612a3.png)
 
