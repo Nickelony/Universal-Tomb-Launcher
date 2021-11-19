@@ -47,7 +47,6 @@
 			// 
 			// label_Message
 			// 
-			this.label_Message.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
 			this.label_Message.Dock = System.Windows.Forms.DockStyle.Bottom;
 			this.label_Message.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.label_Message.ForeColor = System.Drawing.Color.White;

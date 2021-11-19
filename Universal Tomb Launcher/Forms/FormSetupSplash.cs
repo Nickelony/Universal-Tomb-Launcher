@@ -85,6 +85,9 @@ namespace UniversalTombLauncher.Forms
 
 			if (SupportsAcrylic)
 				SetAcrylicWindowStyle();
+
+			if (IsUsingLightTheme)
+				SetLightTheme();
 		}
 
 		protected override void OnShown(EventArgs e)
@@ -137,8 +140,15 @@ namespace UniversalTombLauncher.Forms
 
 			panel_Top.Visible = false;
 
-			label_Message.ForeColor = IsUsingLightTheme ? Color.Black : Color.White;
 			label_Message.BackColor = Color.Transparent;
+		}
+
+		private void SetLightTheme()
+		{
+			label_Message.ForeColor = Color.Black;
+
+			if (!SupportsAcrylic)
+				BackColor = Color.White;
 		}
 
 		private void ForceClickOnWindow()
