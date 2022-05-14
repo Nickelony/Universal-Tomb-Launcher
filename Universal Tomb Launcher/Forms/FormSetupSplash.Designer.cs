@@ -48,7 +48,7 @@
 			// label_Message
 			// 
 			this.label_Message.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.label_Message.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+			this.label_Message.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.label_Message.ForeColor = System.Drawing.Color.White;
 			this.label_Message.Location = new System.Drawing.Point(0, 256);
 			this.label_Message.Name = "label_Message";

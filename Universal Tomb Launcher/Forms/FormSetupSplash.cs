@@ -21,13 +21,20 @@ namespace UniversalTombLauncher.Forms
 			512, 384, 256
 		};
 
+		private bool _previewMode;
+
 		#endregion Fields
 
 		#region Construction
 
-		public FormSetupSplash(string splashImageDirectory)
+		public FormSetupSplash(string splashImageDirectory, bool previewMode, string overrideMessage = null)
 		{
 			InitializeComponent();
+
+			_previewMode = previewMode;
+
+			if (overrideMessage != null)
+				label_Message.Text = overrideMessage;
 
 			string splashImagePath = Path.Combine(splashImageDirectory, "splash.bmp");
 
@@ -94,7 +101,11 @@ namespace UniversalTombLauncher.Forms
 		{
 			base.OnShown(e);
 
-			timer_Input.Start();
+			if (_previewMode)
+				label_Message.Text = "Press ESC to EXIT preview mode...";
+			else
+				timer_Input.Start();
+
 			timer_Animation.Start();
 		}
 
@@ -102,11 +113,14 @@ namespace UniversalTombLauncher.Forms
 		{
 			base.OnKeyDown(e);
 
-			if (e.Control)
+			if (!_previewMode && e.Control)
 			{
 				timer_Input.Stop();
 				DialogResult = DialogResult.OK;
 			}
+
+			if (_previewMode && e.KeyCode == Keys.Escape)
+				DialogResult = DialogResult.OK;
 		}
 
 		#endregion Overrides

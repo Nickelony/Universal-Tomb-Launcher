@@ -13,7 +13,7 @@ namespace UniversalTombLauncher
 	internal static class Program
 	{
 		[STAThread]
-		private static void Main()
+		private static void Main(string[] args)
 		{
 			try
 			{
@@ -37,7 +37,13 @@ namespace UniversalTombLauncher
 				}
 
 				string engineDirectory = Path.GetDirectoryName(validExecutable);
-				DialogResult splashResult = ShowSplashScreen(engineDirectory);
+				bool isPreviewMode = Array.Exists(args, x => x.Equals("-p", StringComparison.OrdinalIgnoreCase));
+				string overrideMessage = version == GameVersion.TR1Main ? "Launching game..." : null;
+
+				DialogResult splashResult = ShowSplashScreen(engineDirectory, isPreviewMode, overrideMessage);
+
+				if (isPreviewMode)
+					return;
 
 				const DialogResult pressedCtrl = DialogResult.OK;
 				const DialogResult timePassed = DialogResult.Cancel;
@@ -63,9 +69,10 @@ namespace UniversalTombLauncher
 			}
 		}
 
-		private static DialogResult ShowSplashScreen(string splashImageDirectory)
+		private static DialogResult ShowSplashScreen(string splashImageDirectory,
+			bool previewMode = false, string overrideMessage = null)
 		{
-			using (var form = new FormSetupSplash(splashImageDirectory))
+			using (var form = new FormSetupSplash(splashImageDirectory, previewMode, overrideMessage))
 				return form.ShowDialog();
 		}
 
