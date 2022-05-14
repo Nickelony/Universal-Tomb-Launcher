@@ -7,7 +7,7 @@
     <ProjectGuid>{979017B4-9016-4432-8DAF-4CDFD8C966EB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>UniversalTombLauncher</RootNamespace>
-    <AssemblyName>979017b4-9016-4432-8daf-4cdfd8c966eb</AssemblyName>
+    <AssemblyName>launch</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
