@@ -7,7 +7,7 @@
     <ProjectGuid>{979017B4-9016-4432-8DAF-4CDFD8C966EB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>UniversalTombLauncher</RootNamespace>
-    <AssemblyName>launch</AssemblyName>
+    <AssemblyName>979017b4-9016-4432-8daf-4cdfd8c966eb</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -102,8 +102,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Icons\flep.ico" />
-    <Content Include="Icons\flep.png" />
+    <Content Include="Icons\tr1.ico" />
+    <Content Include="Icons\tr1.png" />
+    <Content Include="Icons\tr2.ico" />
+    <Content Include="Icons\tr2.png" />
+    <Content Include="Icons\tr3.ico" />
+    <Content Include="Icons\tr3.png" />
     <Content Include="Icons\tr4.ico" />
     <Content Include="Icons\tr4.png" />
     <Content Include="Icons\trng.ico" />

@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 using UniversalTombLauncher.Forms.Bases;
 using UniversalTombLauncher.Utils;
 
@@ -16,7 +17,7 @@ namespace UniversalTombLauncher.Forms
 			_originalCheckedState = checkBox_BorderFix.Checked;
 		}
 
-		private void button_Next_Click(object sender, System.EventArgs e)
+		private void button_Next_Click(object sender, EventArgs e)
 		{
 			if (checkBox_BorderFix.Checked != _originalCheckedState)
 			{

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using UniversalTombLauncher.Enums;
 
@@ -12,6 +13,7 @@ namespace UniversalTombLauncher.Helpers
 
 		public const string
 			TR1ProcessName = "tombati",
+			TR1MainProcessName = "Tomb1Main",
 			TR2ProcessName = "Tomb2",
 			TR3ProcessName = "tomb3",
 			TR4ProcessName = "tomb4",
@@ -21,6 +23,7 @@ namespace UniversalTombLauncher.Helpers
 
 		public const string
 			TR1WndClassName = "TRClass",
+			TR1MainWndClassName = "SDL_app",
 			TR2WndClassName = "Dude:TombRaiderII:DDWndClass",
 			TR3WndClassName = "Window Class", // Why...
 			TR4WndClassName = "MainGameWindow",
@@ -53,7 +56,7 @@ namespace UniversalTombLauncher.Helpers
 
 		private static Process GetProcessWithExactWindow(string processName, string windowClassName)
 		{
-			var windowHandle = NativeMethods.FindWindow(windowClassName, default);
+			IntPtr windowHandle = NativeMethods.FindWindow(windowClassName, default);
 
 			if (windowHandle != null)
 			{

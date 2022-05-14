@@ -18,7 +18,7 @@ namespace UniversalTombLauncher.Helpers
 				if (!TryGetRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentVersion", out dynamic version))
 					return 0;
 
-				var versionParts = ((string)version).Split('.');
+				string[] versionParts = ((string)version).Split('.');
 
 				if (versionParts.Length != 2)
 					return 0;
@@ -39,7 +39,7 @@ namespace UniversalTombLauncher.Helpers
 				if (!TryGetRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentVersion", out dynamic version))
 					return 0;
 
-				var versionParts = ((string)version).Split('.');
+				string[] versionParts = ((string)version).Split('.');
 
 				if (versionParts.Length != 2)
 					return 0;
@@ -65,7 +65,7 @@ namespace UniversalTombLauncher.Helpers
 
 			try
 			{
-				using (var rk = Registry.LocalMachine.OpenSubKey(path))
+				using (RegistryKey rk = Registry.LocalMachine.OpenSubKey(path))
 				{
 					if (rk == null)
 						return false;

@@ -40,7 +40,8 @@ namespace UniversalTombLauncher.Utils
 		private static bool IsValidLogFile(string fileName) =>
 			fileName.BulkStringComparision(StringComparison.OrdinalIgnoreCase,
 				"db_patches_crash.bin", "DETECTED CRASH.txt", "LastExtraction.lst")
-			|| fileName.EndsWith("_warm_up_log.txt", StringComparison.OrdinalIgnoreCase);
+			|| fileName.EndsWith("_warm_up_log.txt", StringComparison.OrdinalIgnoreCase)
+			|| Path.GetExtension(fileName).Equals(".log", StringComparison.OrdinalIgnoreCase);
 
 		private static bool IsValidNumberedCrashLog(string fileName) =>
 			Regex.IsMatch(fileName, @"last_crash_\d+\.txt", RegexOptions.IgnoreCase);

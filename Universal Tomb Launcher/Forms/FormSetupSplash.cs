@@ -72,7 +72,7 @@ namespace UniversalTombLauncher.Forms
 			if (titleBarHeight == 0 || FormBorderStyle == FormBorderStyle.None)
 				titleBarHeight = panel_Top.Height;
 
-			Height = titleBarHeight * 2 + fontHeight;
+			Height = (titleBarHeight * 2) + fontHeight;
 		}
 
 		#endregion Construction

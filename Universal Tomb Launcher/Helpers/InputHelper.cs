@@ -13,7 +13,7 @@ namespace UniversalTombLauncher.Helpers
 
 		public static void ClickOnPoint(IntPtr hWnd, Point clientPoint)
 		{
-			var cachedCursorPos = Cursor.Position;
+			Point cachedCursorPos = Cursor.Position;
 
 			NativeMethods.ClientToScreen(hWnd, ref clientPoint);
 			Cursor.Position = new Point(clientPoint.X, clientPoint.Y);
