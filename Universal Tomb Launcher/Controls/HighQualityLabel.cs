@@ -7,7 +7,7 @@ namespace UniversalTombLauncher.Controls
 	{
 		protected override void OnPaint(PaintEventArgs e)
 		{
-			e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+			e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
 			e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 
 			var format = new StringFormat();

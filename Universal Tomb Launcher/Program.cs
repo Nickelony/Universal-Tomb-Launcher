@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using UniversalTombLauncher.Enums;
 using UniversalTombLauncher.Forms;
 using UniversalTombLauncher.Helpers;
@@ -15,6 +16,16 @@ namespace UniversalTombLauncher
 		[STAThread]
 		private static void Main(string[] args)
 		{
+			Application.SetCompatibleTextRenderingDefault(false);
+
+			bool forceSetup = Array.Exists(args, x
+				=> x.Equals("-s", StringComparison.OrdinalIgnoreCase)
+				|| x.Equals("-setup", StringComparison.OrdinalIgnoreCase));
+
+			bool isPreviewMode = Array.Exists(args, x
+				=> x.Equals("-p", StringComparison.OrdinalIgnoreCase)
+				|| x.Equals("-preview", StringComparison.OrdinalIgnoreCase));
+
 			try
 			{
 				string programDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -36,19 +47,27 @@ namespace UniversalTombLauncher
 						return;
 				}
 
-				string engineDirectory = Path.GetDirectoryName(validExecutable);
-				bool isPreviewMode = Array.Exists(args, x => x.Equals("-p", StringComparison.OrdinalIgnoreCase));
-				string overrideMessage = version == GameVersion.TR1Main ? "Launching game..." : null;
+				DialogResult splashResult;
 
-				DialogResult splashResult = ShowSplashScreen(engineDirectory, isPreviewMode, overrideMessage);
+				if (!forceSetup)
+				{
+					string engineDirectory = Path.GetDirectoryName(validExecutable);
+					string overrideMessage = version == GameVersion.Tomb1Main ? "Launching game..." : null;
 
-				if (isPreviewMode)
-					return;
+					Application.VisualStyleState = VisualStyleState.ClientAndNonClientAreasEnabled;
+					splashResult = ShowSplashScreen(engineDirectory, isPreviewMode, overrideMessage);
+					Application.VisualStyleState = VisualStyleState.NonClientAreaEnabled;
 
-				const DialogResult pressedCtrl = DialogResult.OK;
-				const DialogResult timePassed = DialogResult.Cancel;
+					if (isPreviewMode)
+						return;
+				}
+				else
+					splashResult = DialogResult.OK;
 
-				if (splashResult == pressedCtrl)
+				const DialogResult PRESSED_CTRL = DialogResult.OK;
+				const DialogResult TIME_PASSED = DialogResult.Cancel;
+
+				if (splashResult == PRESSED_CTRL)
 				{
 					if (OSVersionHelper.IsWindowsEightOrNewer() && version == GameVersion.TR4)
 					{
@@ -60,7 +79,7 @@ namespace UniversalTombLauncher
 
 					RunGame(validExecutable, true);
 				}
-				else if (splashResult == timePassed)
+				else if (splashResult == TIME_PASSED)
 					RunGame(validExecutable);
 			}
 			catch (Exception ex)

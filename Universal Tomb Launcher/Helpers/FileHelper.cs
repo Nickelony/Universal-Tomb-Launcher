@@ -44,7 +44,7 @@ namespace UniversalTombLauncher.Helpers
 				switch (fileName.ToUpper())
 				{
 					case "TOMBATI": return GameVersion.TR1;
-					case "TOMB1MAIN": return GameVersion.TR1Main;
+					case "TOMB1MAIN": return GameVersion.Tomb1Main;
 					case "TOMB2": return GameVersion.TR2;
 					case "TOMB3": return GameVersion.TR3;
 					case "TOMB4": return GameVersion.TR4;
