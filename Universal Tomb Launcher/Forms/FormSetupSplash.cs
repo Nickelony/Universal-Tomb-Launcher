@@ -162,7 +162,7 @@ namespace UniversalTombLauncher.Forms
 			label_Message.ForeColor = Color.Black;
 
 			if (!SupportsAcrylic)
-				BackColor = Color.White;
+				BackColor = Color.FromArgb(230, 230, 230);
 		}
 
 		private void ForceClickOnWindow()
