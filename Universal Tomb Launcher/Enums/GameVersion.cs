@@ -8,6 +8,7 @@
 		TR2,
 		TR3,
 		TR4,
-		TR5
+		TR5,
+		TombEngine
 	}
 }

@@ -48,6 +48,8 @@ namespace UniversalTombLauncher
 				}
 
 				DialogResult splashResult;
+				const DialogResult PRESSED_CTRL = DialogResult.OK;
+				const DialogResult TIME_PASSED = DialogResult.Cancel;
 
 				if (!forceSetup)
 				{
@@ -62,10 +64,7 @@ namespace UniversalTombLauncher
 						return;
 				}
 				else
-					splashResult = DialogResult.OK;
-
-				const DialogResult PRESSED_CTRL = DialogResult.OK;
-				const DialogResult TIME_PASSED = DialogResult.Cancel;
+					splashResult = PRESSED_CTRL;
 
 				if (splashResult == PRESSED_CTRL)
 				{
