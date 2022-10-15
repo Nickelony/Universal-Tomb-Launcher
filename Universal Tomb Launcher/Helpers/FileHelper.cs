@@ -4,7 +4,7 @@ using UniversalTombLauncher.Enums;
 
 namespace UniversalTombLauncher.Helpers
 {
-	public static class FileHelper
+	internal static class FileHelper
 	{
 		public static readonly string[] ValidGameExecutableNames = new string[]
 		{
@@ -32,28 +32,27 @@ namespace UniversalTombLauncher.Helpers
 			return Array.Find(files, x => IsValidGameExecutable(x));
 		}
 
-		private static bool IsValidGameExecutable(string filePath) =>
-			Array.Exists(ValidGameExecutableNames, x => x.Equals(Path.GetFileName(filePath), StringComparison.OrdinalIgnoreCase));
+		private static bool IsValidGameExecutable(string filePath)
+			=> Array.Exists(ValidGameExecutableNames, x => x.Equals(Path.GetFileName(filePath), StringComparison.OrdinalIgnoreCase));
 
 		private static GameVersion GetGameVersionFromFile(string filePath)
 		{
 			string fileName = Path.GetFileNameWithoutExtension(filePath);
 
-			if (fileName != null)
-			{
-				switch (fileName.ToUpper())
-				{
-					case "TOMBATI": return GameVersion.TR1;
-					case "TOMB1MAIN": return GameVersion.Tomb1Main;
-					case "TOMB2": return GameVersion.TR2;
-					case "TOMB3": return GameVersion.TR3;
-					case "TOMB4": return GameVersion.TR4;
-					case "PCTOMB5": return GameVersion.TR5;
-					case "TOMBENGINE": return GameVersion.TombEngine;
-				}
-			}
+			if (fileName == null)
+				return GameVersion.Unknown;
 
-			return GameVersion.Unknown;
+			switch (fileName.ToUpper())
+			{
+				case "TOMBATI": return GameVersion.TR1;
+				case "TOMB1MAIN": return GameVersion.Tomb1Main;
+				case "TOMB2": return GameVersion.TR2;
+				case "TOMB3": return GameVersion.TR3;
+				case "TOMB4": return GameVersion.TR4;
+				case "PCTOMB5": return GameVersion.TR5;
+				case "TOMBENGINE": return GameVersion.TombEngine;
+				default: return GameVersion.Unknown;
+			}
 		}
 	}
 }

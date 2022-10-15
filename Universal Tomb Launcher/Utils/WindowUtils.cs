@@ -5,19 +5,19 @@ using System.Windows.Forms;
 
 namespace UniversalTombLauncher.Utils
 {
-	public static class WindowUtils
+	internal static class WindowUtils
 	{
 		// Source: https://stackoverflow.com/a/56514746
 
-		public static void EnableAcrylic(IWin32Window window, Color blurColor)
+		public static void EnableAccent(IWin32Window window, ACCENT targetAccent, Color accentColor)
 		{
 			if (window == null)
 				throw new ArgumentNullException(nameof(window));
 
 			var accentPolicy = new AccentPolicy
 			{
-				AccentState = ACCENT.ENABLE_ACRYLICBLURBEHIND,
-				GradientColor = ToAbgr(blurColor)
+				AccentState = targetAccent,
+				GradientColor = ToAbgr(accentColor)
 			};
 
 			unsafe
@@ -36,9 +36,9 @@ namespace UniversalTombLauncher.Utils
 		private static uint ToAbgr(Color color)
 		{
 			return ((uint)color.A << 24)
-				| ((uint)color.B << 16)
-				| ((uint)color.G << 8)
-				| color.R;
+				 | ((uint)color.B << 16)
+				 | ((uint)color.G << 8)
+				 | color.R;
 		}
 	}
 }

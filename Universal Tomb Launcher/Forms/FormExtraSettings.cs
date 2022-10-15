@@ -1,12 +1,24 @@
 ﻿using System;
 using System.Windows.Forms;
-using UniversalTombLauncher.Forms.Bases;
 using UniversalTombLauncher.Utils;
 
 namespace UniversalTombLauncher.Forms
 {
-	public partial class FormExtraSettings : FormNoSystemMenu
+	internal partial class FormExtraSettings : Form
 	{
+		private const int WS_SYSMENU = 0x80000;
+
+		protected override CreateParams CreateParams
+		{
+			get
+			{
+				CreateParams cp = base.CreateParams;
+				cp.Style &= ~WS_SYSMENU;
+
+				return cp;
+			}
+		}
+
 		private bool _originalCheckedState;
 
 		public FormExtraSettings()

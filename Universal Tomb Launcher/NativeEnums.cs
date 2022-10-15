@@ -1,11 +1,11 @@
 ﻿namespace UniversalTombLauncher
 {
-	internal enum WCA
+	public enum WCA
 	{
 		ACCENT_POLICY = 19
 	}
 
-	internal enum ACCENT
+	public enum ACCENT
 	{
 		DISABLED = 0,
 		ENABLE_GRADIENT = 1,

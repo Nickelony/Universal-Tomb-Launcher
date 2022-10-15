@@ -23,6 +23,8 @@
 			this.timer_Input = new System.Windows.Forms.Timer(this.components);
 			this.label_Message = new UniversalTombLauncher.Controls.HighQualityLabel();
 			this.panel_Top = new System.Windows.Forms.Panel();
+			this.panel_Bottom = new System.Windows.Forms.Panel();
+			this.panel_Bottom.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// panel_SplashImage
@@ -47,10 +49,10 @@
 			// 
 			// label_Message
 			// 
-			this.label_Message.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.label_Message.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.label_Message.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
 			this.label_Message.ForeColor = System.Drawing.Color.White;
-			this.label_Message.Location = new System.Drawing.Point(0, 256);
+			this.label_Message.Location = new System.Drawing.Point(0, 0);
 			this.label_Message.Name = "label_Message";
 			this.label_Message.Size = new System.Drawing.Size(384, 75);
 			this.label_Message.TabIndex = 0;
@@ -59,20 +61,33 @@
 			// 
 			// panel_Top
 			// 
+			this.panel_Top.BackColor = System.Drawing.Color.Transparent;
 			this.panel_Top.Dock = System.Windows.Forms.DockStyle.Top;
 			this.panel_Top.Location = new System.Drawing.Point(0, 0);
 			this.panel_Top.Name = "panel_Top";
 			this.panel_Top.Size = new System.Drawing.Size(384, 26);
 			this.panel_Top.TabIndex = 2;
+			this.panel_Top.Paint += new System.Windows.Forms.PaintEventHandler(this.Panel_Top_Paint);
+			// 
+			// panel_Message
+			// 
+			this.panel_Bottom.BackColor = System.Drawing.Color.Transparent;
+			this.panel_Bottom.Controls.Add(this.label_Message);
+			this.panel_Bottom.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.panel_Bottom.Location = new System.Drawing.Point(0, 256);
+			this.panel_Bottom.Name = "panel_Message";
+			this.panel_Bottom.Size = new System.Drawing.Size(384, 75);
+			this.panel_Bottom.TabIndex = 3;
+			this.panel_Bottom.Paint += new System.Windows.Forms.PaintEventHandler(this.Panel_Message_Paint);
 			// 
 			// FormSetupSplash
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+			this.BackColor = System.Drawing.Color.Black;
 			this.ClientSize = new System.Drawing.Size(384, 331);
 			this.Controls.Add(this.panel_SplashImage);
-			this.Controls.Add(this.label_Message);
+			this.Controls.Add(this.panel_Bottom);
 			this.Controls.Add(this.panel_Top);
 			this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -85,6 +100,7 @@
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.TopMost = true;
+			this.panel_Bottom.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -92,6 +108,7 @@
 		#endregion
 
 		private Controls.HighQualityLabel label_Message;
+		private System.Windows.Forms.Panel panel_Bottom;
 		private System.Windows.Forms.Panel panel_SplashImage;
 		private System.Windows.Forms.Panel panel_Top;
 		private System.Windows.Forms.Timer timer_Animation;

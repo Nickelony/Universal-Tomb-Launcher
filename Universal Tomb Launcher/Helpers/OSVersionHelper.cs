@@ -2,7 +2,7 @@
 
 namespace UniversalTombLauncher.Helpers
 {
-	public static class OSVersionHelper
+	internal static class OSVersionHelper
 	{
 		// Source: https://stackoverflow.com/a/37716518
 

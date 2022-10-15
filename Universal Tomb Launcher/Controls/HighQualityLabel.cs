@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace UniversalTombLauncher.Controls
 {
-	public class HighQualityLabel : Label
+	internal class HighQualityLabel : Label
 	{
 		protected override void OnPaint(PaintEventArgs e)
 		{

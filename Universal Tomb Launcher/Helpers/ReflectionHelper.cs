@@ -3,10 +3,10 @@ using System.Reflection;
 
 namespace UniversalTombLauncher.Helpers
 {
-	public static class ReflectionHelper
+	internal static class ReflectionHelper
 	{
-		public static FieldInfo GetConstant(Type type, string name) =>
-			Array.Find(type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy),
+		public static FieldInfo GetConstant(Type type, string name)
+			=> Array.Find(type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy),
 				x => x.IsLiteral && !x.IsInitOnly && x.Name.Equals(name));
 	}
 }

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace UniversalTombLauncher.Helpers
 {
-	public static class ShellHelper
+	internal static class ShellHelper
 	{
 		public static IWshShortcut CreateShortcutWithIcon(string exeFilePath, string iconLocation)
 		{

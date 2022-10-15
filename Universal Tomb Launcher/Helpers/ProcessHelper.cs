@@ -5,7 +5,7 @@ using UniversalTombLauncher.Enums;
 
 namespace UniversalTombLauncher.Helpers
 {
-	public static class ProcessHelper
+	internal static class ProcessHelper
 	{
 		#region Constants
 
@@ -33,8 +33,8 @@ namespace UniversalTombLauncher.Helpers
 
 		#endregion Constants
 
-		public static bool IsGameAlreadyRunning(GameVersion version) =>
-			FindGameProcess(version) != null;
+		public static bool IsGameAlreadyRunning(GameVersion version)
+			=> FindGameProcess(version) != null;
 
 		public static Process FindGameProcess(GameVersion version)
 		{
@@ -44,11 +44,11 @@ namespace UniversalTombLauncher.Helpers
 			return GetProcessWithExactWindow(gameProcessName, gameWindowClassName);
 		}
 
-		public static string GetDefaultGameProcessName(GameVersion version) =>
-			GetConstValue<string>(version.ToString() + "ProcessName");
+		public static string GetDefaultGameProcessName(GameVersion version)
+			=> GetConstValue<string>(version.ToString() + "ProcessName");
 
-		public static string GetDefaultGameWindowClassName(GameVersion version) =>
-			GetConstValue<string>(version.ToString() + "WndClassName");
+		public static string GetDefaultGameWindowClassName(GameVersion version)
+			=> GetConstValue<string>(version.ToString() + "WndClassName");
 
 		private static T GetConstValue<T>(string constName)
 		{

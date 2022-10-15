@@ -42,21 +42,18 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration.cs" />
     <Compile Include="Enums\GameVersion.cs" />
+    <Compile Include="Enums\GradientFlow.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Forms\Bases\FormAcrylic.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Forms\FormExtraSettings.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FormExtraSettings.Designer.cs">
       <DependentUpon>FormExtraSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Bases\FormNoSystemMenu.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FormSetupSplash.cs">
       <SubType>Form</SubType>
@@ -100,18 +97,6 @@
     <EmbeddedResource Include="Forms\FormSetupSplash.resx">
       <DependentUpon>FormSetupSplash.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Icons\tr1.ico" />
-    <Content Include="Icons\tr1.png" />
-    <Content Include="Icons\tr2.ico" />
-    <Content Include="Icons\tr2.png" />
-    <Content Include="Icons\tr3.ico" />
-    <Content Include="Icons\tr3.png" />
-    <Content Include="Icons\tr4.ico" />
-    <Content Include="Icons\tr4.png" />
-    <Content Include="Icons\trng.ico" />
-    <Content Include="Icons\trng.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Patches\tr4-border-fix.sdb" />

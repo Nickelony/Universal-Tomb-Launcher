@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace UniversalTombLauncher.Helpers
 {
-	public static class InputHelper
+	internal static class InputHelper
 	{
 		private const int InputType_Mouse = 0;
 		private const int MouseLeft_Down = 0x0002;

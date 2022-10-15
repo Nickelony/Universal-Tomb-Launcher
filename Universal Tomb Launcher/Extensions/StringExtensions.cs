@@ -2,9 +2,9 @@
 
 namespace UniversalTombLauncher.Extensions
 {
-	public static class StringExtensions
+	internal static class StringExtensions
 	{
-		public static bool BulkStringComparision(this string value, StringComparison comparisonType, params string[] strings) =>
-			Array.Exists(strings, x => x.Equals(value, comparisonType));
+		public static bool BulkStringComparision(this string value, StringComparison comparisonType, params string[] strings)
+			=> Array.Exists(strings, x => x.Equals(value, comparisonType));
 	}
 }
