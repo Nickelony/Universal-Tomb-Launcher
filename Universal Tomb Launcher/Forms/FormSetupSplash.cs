@@ -172,8 +172,8 @@ namespace UniversalTombLauncher.Forms
 
 		private void Panel_Top_Paint(object sender, PaintEventArgs e)
 		{
-			Point start = GetGradientStartPoint(_config.BottomBar_GradientFlow, panel_Top.ClientRectangle.Size);
-			Point end = GetGradientEndPoint(_config.BottomBar_GradientFlow, panel_Top.ClientRectangle.Size);
+			Point start = GetGradientStartPoint(_config.TopBar_GradientFlow, panel_Top.ClientRectangle.Size);
+			Point end = GetGradientEndPoint(_config.TopBar_GradientFlow, panel_Top.ClientRectangle.Size);
 
 			Color startColor = ColorTranslator.FromHtml(_config.TopBar_GradientStartColor);
 			Color endColor = ColorTranslator.FromHtml(_config.TopBar_GradientEndColor);
