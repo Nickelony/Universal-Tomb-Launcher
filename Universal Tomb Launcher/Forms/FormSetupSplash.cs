@@ -42,6 +42,7 @@ namespace UniversalTombLauncher.Forms
 
 			InitializeComponent();
 
+			label_Message.ForeColor = ColorTranslator.FromHtml(_config.FontColor);
 			timer_Input.Interval = _config.DisplayTimeMilliseconds;
 
 			if (overrideMessage != null)
