@@ -18,7 +18,7 @@ namespace UniversalTombLauncher.Helpers
 
 		private static readonly string TemplateSpecificDirectory = "Engine";
 
-        public static string FindValidGameExecutable(string gameDirectory, out GameVersion version)
+		public static string FindValidGameExecutable(string gameDirectory, out GameVersion version)
 		{
 			string result = string.Empty;
 			string platformSpecificDirectory = PlatformSpecificDirectories[Environment.Is64BitOperatingSystem ? 1 : 0];
@@ -30,14 +30,16 @@ namespace UniversalTombLauncher.Helpers
 
 			if (string.IsNullOrEmpty(result))
 			{
-			 	engineSubdirectory = Path.Combine(engineSubdirectory, platformSpecificDirectory);
-			 	if (Directory.Exists(engineSubdirectory))
+				engineSubdirectory = Path.Combine(engineSubdirectory, platformSpecificDirectory);
+
+				if (Directory.Exists(engineSubdirectory))
 					result = FindValidGameExecutable(engineSubdirectory);
 			}
 
 			if (string.IsNullOrEmpty(result))
 			{
 				engineSubdirectory = Path.Combine(gameDirectory, platformSpecificDirectory);
+
 				if (Directory.Exists(engineSubdirectory))
 					result = FindValidGameExecutable(engineSubdirectory);
 			}
