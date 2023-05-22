@@ -6,20 +6,43 @@ namespace UniversalTombLauncher.Helpers
 {
 	internal static class FileHelper
 	{
-		public static readonly string[] ValidGameExecutableNames = new string[]
+		private static readonly string[] ValidGameExecutableNames = new string[]
 		{
 			"tombati.exe", "Tomb1Main.exe", "Tomb2.exe", "tomb3.exe", "tomb4.exe", "PCTomb5.exe", "TombEngine.exe"
 		};
 
-		public static string FindValidGameExecutable(string gameDirectory, out GameVersion version)
+		private static readonly string[] PlatformSpecificDirectories = new string[]
 		{
-			string result = null;
-			string engineSubdirectory = Path.Combine(gameDirectory, "Engine");
+			"Bin\\x86", "Bin\\x64"
+		};
+
+		private static readonly string TemplateSpecificDirectory = "Engine";
+
+        public static string FindValidGameExecutable(string gameDirectory, out GameVersion version)
+		{
+			string result = string.Empty;
+			string platformSpecificDirectory = PlatformSpecificDirectories[Environment.Is64BitOperatingSystem ? 1 : 0];
+
+			string engineSubdirectory = Path.Combine(gameDirectory, TemplateSpecificDirectory);
 
 			if (Directory.Exists(engineSubdirectory))
 				result = FindValidGameExecutable(engineSubdirectory);
 
-			if (result == null)
+			if (string.IsNullOrEmpty(result))
+			{
+			 	engineSubdirectory = Path.Combine(engineSubdirectory, platformSpecificDirectory);
+			 	if (Directory.Exists(engineSubdirectory))
+					result = FindValidGameExecutable(engineSubdirectory);
+			}
+
+			if (string.IsNullOrEmpty(result))
+			{
+				engineSubdirectory = Path.Combine(gameDirectory, platformSpecificDirectory);
+				if (Directory.Exists(engineSubdirectory))
+					result = FindValidGameExecutable(engineSubdirectory);
+			}
+
+			if (string.IsNullOrEmpty(result))
 				result = FindValidGameExecutable(gameDirectory);
 
 			version = GetGameVersionFromFile(result);
