@@ -8,7 +8,7 @@ namespace UniversalTombLauncher.Helpers
 	{
 		private static readonly string[] ValidGameExecutableNames = new string[]
 		{
-			"tombati.exe", "Tomb1Main.exe", "Tomb2.exe", "tomb3.exe", "tomb4.exe", "PCTomb5.exe", "TombEngine.exe"
+			"tombati.exe", "Tomb1Main.exe", "TR1X.exe", "Tomb2.exe", "tomb3.exe", "tomb4.exe", "PCTomb5.exe", "TombEngine.exe"
 		};
 
 		private static readonly string[] PlatformSpecificDirectories = new string[]
@@ -71,6 +71,7 @@ namespace UniversalTombLauncher.Helpers
 			{
 				case "TOMBATI": return GameVersion.TR1;
 				case "TOMB1MAIN": return GameVersion.Tomb1Main;
+				case "TR1X": return GameVersion.TR1X;
 				case "TOMB2": return GameVersion.TR2;
 				case "TOMB3": return GameVersion.TR3;
 				case "TOMB4": return GameVersion.TR4;

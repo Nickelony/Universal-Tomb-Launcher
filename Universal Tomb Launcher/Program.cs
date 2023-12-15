@@ -54,7 +54,9 @@ namespace UniversalTombLauncher
 				if (!forceSetup)
 				{
 					string engineDirectory = Path.GetDirectoryName(validExecutable);
-					string overrideMessage = version == GameVersion.Tomb1Main ? "Launching game..." : null;
+					string overrideMessage = version == GameVersion.Tomb1Main || version == GameVersion.TR1X
+						? "Launching game..."
+						: null;
 
 					Application.VisualStyleState = VisualStyleState.ClientAndNonClientAreasEnabled;
 					splashResult = ShowSplashScreen(engineDirectory, isPreviewMode, overrideMessage);

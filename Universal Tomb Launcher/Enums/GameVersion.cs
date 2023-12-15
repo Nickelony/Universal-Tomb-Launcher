@@ -5,6 +5,7 @@
 		Unknown,
 		TR1,
 		Tomb1Main,
+		TR1X,
 		TR2,
 		TR3,
 		TR4,

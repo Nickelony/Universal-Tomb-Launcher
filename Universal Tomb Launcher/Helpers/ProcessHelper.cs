@@ -14,6 +14,7 @@ namespace UniversalTombLauncher.Helpers
 		public const string
 			TR1ProcessName = "tombati",
 			Tomb1MainProcessName = "Tomb1Main",
+			TR1XProcessName = "TR1X",
 			TR2ProcessName = "Tomb2",
 			TR3ProcessName = "tomb3",
 			TR4ProcessName = "tomb4",
@@ -25,6 +26,7 @@ namespace UniversalTombLauncher.Helpers
 		public const string
 			TR1WndClassName = "TRClass",
 			Tomb1MainWndClassName = "SDL_app",
+			TR1XWndClassName = Tomb1MainWndClassName,
 			TR2WndClassName = "Dude:TombRaiderII:DDWndClass",
 			TR3WndClassName = "Window Class", // Why...
 			TR4WndClassName = "MainGameWindow",
@@ -41,7 +43,7 @@ namespace UniversalTombLauncher.Helpers
 			string gameProcessName = GetDefaultGameProcessName(version);
 			string gameWindowClassName = GetDefaultGameWindowClassName(version);
 
-			return GetProcessWithExactWindow(gameProcessName, gameWindowClassName);
+			return TryGetProcessWithExactWindow(gameProcessName, gameWindowClassName);
 		}
 
 		public static string GetDefaultGameProcessName(GameVersion version)
@@ -56,21 +58,30 @@ namespace UniversalTombLauncher.Helpers
 			return (T)constField?.GetValue(null);
 		}
 
-		private static Process GetProcessWithExactWindow(string processName, string windowClassName)
+		private static Process TryGetProcessWithExactWindow(string processName, string windowClassName)
 		{
 			IntPtr windowHandle = NativeMethods.FindWindow(windowClassName, default);
+			Process process = TryGetProcessFromWindowHandle(windowHandle);
 
-			if (windowHandle != null)
-			{
-				NativeMethods.GetWindowThreadProcessId(windowHandle, out uint processId);
+			if (process?.ProcessName.Equals(processName) == true)
+				return process;
 
-				var process = Process.GetProcessById((int)processId);
+			windowHandle = NativeMethods.FindWindow(windowClassName, processName);
+			process = TryGetProcessFromWindowHandle(windowHandle);
 
-				if (process.ProcessName.Equals(processName))
-					return process;
-			}
+			if (process?.ProcessName.Equals(processName) == true)
+				return process;
 
 			return null;
+		}
+
+		private static Process TryGetProcessFromWindowHandle(IntPtr windowHandle)
+		{
+			if (windowHandle == IntPtr.Zero)
+				return null;
+
+			NativeMethods.GetWindowThreadProcessId(windowHandle, out uint processId);
+			return Process.GetProcessById((int)processId);
 		}
 	}
 }
