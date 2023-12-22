@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 using UniversalTombLauncher.Enums;
@@ -25,6 +26,10 @@ namespace UniversalTombLauncher
 			bool isPreviewMode = Array.Exists(args, x
 				=> x.Equals("-p", StringComparison.OrdinalIgnoreCase)
 				|| x.Equals("-preview", StringComparison.OrdinalIgnoreCase));
+
+			bool debugMode = Array.Exists(args, x
+				=> x.Equals("-d", StringComparison.OrdinalIgnoreCase)
+				|| x.Equals("-debug", StringComparison.OrdinalIgnoreCase));
 
 			try
 			{
@@ -78,10 +83,10 @@ namespace UniversalTombLauncher
 							return; // Don't start the game
 					}
 
-					RunGame(validExecutable, true);
+					RunGame(validExecutable, true, debugMode);
 				}
 				else if (splashResult == TIME_PASSED)
-					RunGame(validExecutable);
+					RunGame(validExecutable, false, debugMode);
 			}
 			catch (Exception ex)
 			{
@@ -102,10 +107,10 @@ namespace UniversalTombLauncher
 				return form.ShowDialog();
 		}
 
-		private static void RunGame(string exeFilePath, bool setup = false)
+		private static void RunGame(string exeFilePath, bool setup = false, bool debug = false)
 		{
 			// We must create a shortcut of the game and run it instead to apply the icon of this launcher to the game window
-			string shortcutPath = CreateGameShortcut(exeFilePath, setup);
+			string shortcutPath = CreateGameShortcut(exeFilePath, setup, debug);
 
 			try { Process.Start(shortcutPath).WaitForExit(); }
 			catch { }
@@ -118,12 +123,20 @@ namespace UniversalTombLauncher
 		}
 
 		/// <returns>Path to the shortcut.</returns>
-		private static string CreateGameShortcut(string exeFilePath, bool setup)
+		private static string CreateGameShortcut(string exeFilePath, bool setup, bool debug)
 		{
 			string iconLocation = Assembly.GetExecutingAssembly().Location; // Target icon is the icon of this launcher
 
 			var shortcut = ShellHelper.CreateShortcutWithIcon(exeFilePath, iconLocation);
-			shortcut.Arguments = setup ? "-setup" : string.Empty;
+			var argumentsBuilder = new StringBuilder();
+
+			if (setup)
+				argumentsBuilder.Append("-setup ");
+
+			if (debug)
+				argumentsBuilder.Append("-debug ");
+
+			shortcut.Arguments = argumentsBuilder.ToString();
 			shortcut.Save();
 
 			return shortcut.FullName;
