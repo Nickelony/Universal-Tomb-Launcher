@@ -178,12 +178,8 @@ namespace UniversalTombLauncher.Forms
 
 			Color startColor = ColorTranslator.FromHtml(_config.TopBar_GradientStartColor);
 			Color endColor = ColorTranslator.FromHtml(_config.TopBar_GradientEndColor);
-
-			if (_supportsAcrylic)
-			{
-				startColor = Color.FromArgb(_config.TopBar_GradientStartAlpha, startColor.R, startColor.G, startColor.B);
-				endColor = Color.FromArgb(_config.TopBar_GradientEndAlpha, endColor.R, endColor.G, endColor.B);
-			}
+			startColor = Color.FromArgb(_config.TopBar_GradientStartAlpha, startColor.R, startColor.G, startColor.B);
+			endColor = Color.FromArgb(_config.TopBar_GradientEndAlpha, endColor.R, endColor.G, endColor.B);
 
 			var brush = new LinearGradientBrush(start, end, startColor, endColor);
 			e.Graphics.FillRectangle(brush, 0, 0, panel_Top.Width, panel_Top.Height);
@@ -196,12 +192,8 @@ namespace UniversalTombLauncher.Forms
 
 			Color startColor = ColorTranslator.FromHtml(_config.BottomBar_GradientStartColor);
 			Color endColor = ColorTranslator.FromHtml(_config.BottomBar_GradientEndColor);
-
-			if (_supportsAcrylic)
-			{
-				startColor = Color.FromArgb(_config.BottomBar_GradientStartAlpha, startColor.R, startColor.G, startColor.B);
-				endColor = Color.FromArgb(_config.BottomBar_GradientEndAlpha, endColor.R, endColor.G, endColor.B);
-			}
+			startColor = Color.FromArgb(_config.BottomBar_GradientStartAlpha, startColor.R, startColor.G, startColor.B);
+			endColor = Color.FromArgb(_config.BottomBar_GradientEndAlpha, endColor.R, endColor.G, endColor.B);
 
 			var brush = new LinearGradientBrush(start, end, startColor, endColor);
 			e.Graphics.FillRectangle(brush, 0, 0, panel_Bottom.Width, panel_Bottom.Height);
