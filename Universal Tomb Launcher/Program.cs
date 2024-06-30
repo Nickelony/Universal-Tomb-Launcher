@@ -58,13 +58,12 @@ namespace UniversalTombLauncher
 
 				if (!forceSetup)
 				{
-					string engineDirectory = Path.GetDirectoryName(validExecutable);
 					string overrideMessage = version == GameVersion.Tomb1Main || version == GameVersion.TR1X
 						? "Launching game..."
 						: null;
 
 					Application.VisualStyleState = VisualStyleState.ClientAndNonClientAreasEnabled;
-					splashResult = ShowSplashScreen(engineDirectory, isPreviewMode, overrideMessage);
+					splashResult = ShowSplashScreen(isPreviewMode, overrideMessage);
 					Application.VisualStyleState = VisualStyleState.NonClientAreaEnabled;
 
 					if (isPreviewMode)
@@ -94,10 +93,9 @@ namespace UniversalTombLauncher
 			}
 		}
 
-		private static DialogResult ShowSplashScreen(string splashImageDirectory,
-			bool previewMode = false, string overrideMessage = null)
+		private static DialogResult ShowSplashScreen(bool previewMode = false, string overrideMessage = null)
 		{
-			using (var form = new FormSetupSplash(splashImageDirectory, previewMode, overrideMessage))
+			using (var form = new FormSetupSplash(previewMode, overrideMessage))
 				return form.ShowDialog();
 		}
 

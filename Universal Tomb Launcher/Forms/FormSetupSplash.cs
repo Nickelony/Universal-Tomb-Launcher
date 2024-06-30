@@ -35,7 +35,7 @@ namespace UniversalTombLauncher.Forms
 
 		#region Construction
 
-		public FormSetupSplash(string splashImageDirectory, bool isPreviewMode, string overrideMessage = null)
+		public FormSetupSplash(bool isPreviewMode, string overrideMessage = null)
 		{
 			_isPreviewMode = isPreviewMode;
 			UpdatePersonalizationProperties();
@@ -48,7 +48,7 @@ namespace UniversalTombLauncher.Forms
 			if (overrideMessage != null)
 				label_Message.Text = overrideMessage;
 
-			string splashImagePath = Path.Combine(splashImageDirectory, "splash.bmp");
+			string splashImagePath = Directory.Exists("Engine") ? @"Engine\splash.bmp" : "splash.bmp";
 
 			if (File.Exists(splashImagePath))
 				InitializeSplashImage(splashImagePath);
