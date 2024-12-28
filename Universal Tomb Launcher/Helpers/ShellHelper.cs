@@ -1,23 +1,60 @@
-﻿using IWshRuntimeLibrary;
+﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
 
 namespace UniversalTombLauncher.Helpers
 {
 	internal static class ShellHelper
 	{
-		public static IWshShortcut CreateShortcutWithIcon(string exeFilePath, string iconLocation)
+		public static IPersistFile CreateShortcutWithIcon(string exeFilePath, string iconLocation, string args)
 		{
-			string fileName = Path.GetFileNameWithoutExtension(exeFilePath);
-
-			var shell = new WshShell();
-			string shortcutPath = Path.Combine(Path.GetTempPath(), fileName + ".lnk");
-
-			var shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
-			shortcut.TargetPath = exeFilePath;
-			shortcut.WorkingDirectory = Path.GetDirectoryName(exeFilePath);
-			shortcut.IconLocation = iconLocation;
-
-			return shortcut;
+			IShellLink link = (IShellLink)new ShellLink();
+			link.SetPath(exeFilePath);
+			link.SetWorkingDirectory(Path.GetDirectoryName(exeFilePath));
+			link.SetIconLocation(iconLocation, 0);
+			link.SetArguments(args);
+			return (IPersistFile)link;
 		}
+
+		public static string SaveShortcut(IPersistFile shortcut, string exeFilePath)
+		{
+			string shortcutPath = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(exeFilePath) + ".lnk");
+			shortcut.Save(shortcutPath, false);
+			return shortcutPath;
+		}
+	}
+
+	[ComImport]
+	[Guid("00021401-0000-0000-C000-000000000046")]
+	internal class ShellLink
+	{
+	}
+
+	[ComImport]
+	[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+	[Guid("000214F9-0000-0000-C000-000000000046")]
+	internal interface IShellLink
+	{
+		void GetPath([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszFile, int cchMaxPath, out IntPtr pfd, int fFlags);
+		void GetIDList(out IntPtr ppidl);
+		void SetIDList(IntPtr pidl);
+		void GetDescription([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszName, int cchMaxName);
+		void SetDescription([MarshalAs(UnmanagedType.LPWStr)] string pszName);
+		void GetWorkingDirectory([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszDir, int cchMaxPath);
+		void SetWorkingDirectory([MarshalAs(UnmanagedType.LPWStr)] string pszDir);
+		void GetArguments([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszArgs, int cchMaxPath);
+		void SetArguments([MarshalAs(UnmanagedType.LPWStr)] string pszArgs);
+		void GetHotkey(out short pwHotkey);
+		void SetHotkey(short wHotkey);
+		void GetShowCmd(out int piShowCmd);
+		void SetShowCmd(int iShowCmd);
+		void GetIconLocation([Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszIconPath, int cchIconPath, out int piIcon);
+		void SetIconLocation([MarshalAs(UnmanagedType.LPWStr)] string pszIconPath, int iIcon);
+		void SetRelativePath([MarshalAs(UnmanagedType.LPWStr)] string pszPathRel, int dwReserved);
+		void Resolve(IntPtr hwnd, int fFlags);
+		void SetPath([MarshalAs(UnmanagedType.LPWStr)] string pszFile);
 	}
 }

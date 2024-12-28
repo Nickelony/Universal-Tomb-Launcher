@@ -125,7 +125,6 @@ namespace UniversalTombLauncher
 		{
 			string iconLocation = Assembly.GetExecutingAssembly().Location; // Target icon is the icon of this launcher
 
-			var shortcut = ShellHelper.CreateShortcutWithIcon(exeFilePath, iconLocation);
 			var argumentsBuilder = new StringBuilder();
 
 			if (setup)
@@ -134,10 +133,8 @@ namespace UniversalTombLauncher
 			if (debug)
 				argumentsBuilder.Append("-debug ");
 
-			shortcut.Arguments = argumentsBuilder.ToString();
-			shortcut.Save();
-
-			return shortcut.FullName;
+			var shortcut = ShellHelper.CreateShortcutWithIcon(exeFilePath, iconLocation, argumentsBuilder.ToString());
+			return ShellHelper.SaveShortcut(shortcut, exeFilePath);
 		}
 	}
 }
