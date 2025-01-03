@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace UniversalTombLauncher
+namespace UniversalTombLauncher.Native
 {
 	internal struct INPUT
 	{

@@ -1,4 +1,4 @@
-﻿namespace UniversalTombLauncher
+﻿namespace UniversalTombLauncher.Native
 {
 	public enum WCA
 	{

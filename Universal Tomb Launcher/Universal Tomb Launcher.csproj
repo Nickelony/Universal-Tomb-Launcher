@@ -11,7 +11,6 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -65,7 +64,9 @@
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\InputHelper.cs" />
     <Compile Include="Helpers\OSVersionHelper.cs" />
-    <Compile Include="NativeEnums.cs" />
+    <Compile Include="Native\NativeClasses.cs" />
+    <Compile Include="Native\NativeEnums.cs" />
+    <Compile Include="Native\NativeInterfaces.cs" />
     <Compile Include="Utils\FullscreenBorderFix.cs" />
     <Compile Include="Utils\LogCleaner.cs" />
     <Compile Include="Helpers\ProcessHelper.cs" />
@@ -75,8 +76,8 @@
     <Compile Include="Controls\HighQualityLabel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="NativeMethods.cs" />
-    <Compile Include="NativeStructs.cs" />
+    <Compile Include="Native\NativeMethods.cs" />
+    <Compile Include="Native\NativeStructs.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
