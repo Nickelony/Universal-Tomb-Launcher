@@ -110,14 +110,20 @@ namespace UniversalTombLauncher
 			// We must create a shortcut of the game and run it instead to apply the icon of this launcher to the game window
 			string shortcutPath = CreateGameShortcut(exeFilePath, setup, debug);
 
-			try { Process.Start(shortcutPath).WaitForExit(); }
+			try
+			{
+				// Start the game and wait for it to exit
+				Process.Start(shortcutPath).WaitForExit();
+
+				// Delete the shortcut once the game is closed
+				if (File.Exists(shortcutPath))
+					File.Delete(shortcutPath);
+
+				// Clean up the logs - move them to a sub-folder
+				string exeDirectory = Path.GetDirectoryName(exeFilePath);
+				LogCleaner.TidyLogFiles(exeDirectory);
+			}
 			catch { }
-
-			if (File.Exists(shortcutPath))
-				File.Delete(shortcutPath);
-
-			string exeDirectory = Path.GetDirectoryName(exeFilePath);
-			LogCleaner.TidyLogFiles(exeDirectory);
 		}
 
 		/// <returns>Path to the shortcut.</returns>
