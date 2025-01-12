@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace UniversalTombLauncher
+namespace UniversalTombLauncher.Native
 {
 	internal static class NativeMethods
 	{

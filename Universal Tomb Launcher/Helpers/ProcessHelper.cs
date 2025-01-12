@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using UniversalTombLauncher.Enums;
+using UniversalTombLauncher.Native;
 
 namespace UniversalTombLauncher.Helpers
 {

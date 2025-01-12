@@ -1,23 +1,30 @@
-﻿using IWshRuntimeLibrary;
-using System.IO;
+﻿using System.IO;
+using System.Runtime.InteropServices.ComTypes;
+using UniversalTombLauncher.Native;
 
 namespace UniversalTombLauncher.Helpers
 {
 	internal static class ShellHelper
 	{
-		public static IWshShortcut CreateShortcutWithIcon(string exeFilePath, string iconLocation)
+		public static IPersistFile CreateShortcutWithIcon(string exeFilePath, string iconLocation, string args)
 		{
-			string fileName = Path.GetFileNameWithoutExtension(exeFilePath);
+			var link = (IShellLink)new ShellLink();
 
-			var shell = new WshShell();
-			string shortcutPath = Path.Combine(Path.GetTempPath(), fileName + ".lnk");
+			link.SetPath(exeFilePath);
+			link.SetWorkingDirectory(Path.GetDirectoryName(exeFilePath));
+			link.SetIconLocation(iconLocation, 0);
+			link.SetArguments(args);
 
-			var shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
-			shortcut.TargetPath = exeFilePath;
-			shortcut.WorkingDirectory = Path.GetDirectoryName(exeFilePath);
-			shortcut.IconLocation = iconLocation;
+			return (IPersistFile)link;
+		}
 
-			return shortcut;
+		public static string SaveShortcut(IPersistFile shortcut, string exeFilePath)
+		{
+			string exeFileName = Path.GetFileNameWithoutExtension(exeFilePath);
+			string shortcutPath = Path.Combine(Path.GetTempPath(), exeFileName + ".lnk");
+
+			shortcut.Save(shortcutPath, false);
+			return shortcutPath;
 		}
 	}
 }
