@@ -58,7 +58,7 @@ namespace UniversalTombLauncher
 
 				if (!forceSetup)
 				{
-					string overrideMessage = version == GameVersion.Tomb1Main || version == GameVersion.TR1X
+					string overrideMessage = version == GameVersion.Tomb1Main || version == GameVersion.TR1X || version == GameVersion.TR2X
 						? "Launching game..."
 						: null;
 

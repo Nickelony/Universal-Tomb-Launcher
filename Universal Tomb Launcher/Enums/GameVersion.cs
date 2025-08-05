@@ -6,6 +6,7 @@
 		TR1,
 		Tomb1Main,
 		TR1X,
+		TR2X,
 		TR2,
 		TR3,
 		TR4,
