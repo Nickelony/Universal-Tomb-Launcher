@@ -3,6 +3,9 @@ using System.Windows.Forms;
 
 namespace UniversalTombLauncher.Controls
 {
+	/// <summary>
+	/// A label control with enhanced text rendering quality.
+	/// </summary>
 	internal class HighQualityLabel : Label
 	{
 		protected override void OnPaint(PaintEventArgs e)

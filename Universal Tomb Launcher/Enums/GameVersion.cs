@@ -1,5 +1,8 @@
 ﻿namespace UniversalTombLauncher.Enums
 {
+	/// <summary>
+	/// Defines the supported game versions.
+	/// </summary>
 	public enum GameVersion
 	{
 		Unknown,

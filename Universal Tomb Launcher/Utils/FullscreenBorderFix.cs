@@ -6,10 +6,19 @@ using System.Reflection;
 
 namespace UniversalTombLauncher.Utils
 {
+	/// <summary>
+	/// Helper methods for installing or uninstalling the Tomb Raider 4 fullscreen border fix.
+	/// </summary>
 	public static class FullscreenBorderFix
 	{
+		/// <summary>
+		/// The name of the Tomb Raider 4 fullscreen border fix patch as it appears in the system registry.
+		/// </summary>
 		public const string TR4PatchName = "Tomb Raider 4 Fullscreen Border Fix";
 
+		/// <summary>
+		/// Checks if the Tomb Raider 4 fullscreen border fix is installed by looking for its entry in the system registry.
+		/// </summary>
 		public static bool IsBorderFixInstalled()
 		{
 			string displayName;
@@ -48,6 +57,9 @@ namespace UniversalTombLauncher.Utils
 			return false;
 		}
 
+		/// <summary>
+		/// Installs the Tomb Raider 4 fullscreen border fix by extracting the embedded SDB file and executing it with sdbinst.exe.
+		/// </summary>
 		public static void InstallBorderFix()
 		{
 			string sdbFilePath = Path.Combine(Path.GetTempPath(), "tr4-border-fix.sdb");
@@ -65,13 +77,20 @@ namespace UniversalTombLauncher.Utils
 				Arguments = $"-q \"{sdbFilePath}\""
 			};
 
-			try { Process.Start(startInfo).WaitForExit(); }
+			try
+			{
+				using (var process = Process.Start(startInfo))
+					process?.WaitForExit();
+			}
 			catch { }
 
 			if (File.Exists(sdbFilePath))
 				File.Delete(sdbFilePath);
 		}
 
+		/// <summary>
+		/// Uninstalls the Tomb Raider 4 fullscreen border fix by executing sdbinst.exe with the -n option.
+		/// </summary>
 		public static void UninstallBorderFix()
 		{
 			var startInfo = new ProcessStartInfo
@@ -80,7 +99,11 @@ namespace UniversalTombLauncher.Utils
 				Arguments = $"-n \"{TR4PatchName}\""
 			};
 
-			try { Process.Start(startInfo).WaitForExit(); }
+			try
+			{
+				using (var process = Process.Start(startInfo))
+					process?.WaitForExit();
+			}
 			catch { }
 		}
 	}

@@ -6,12 +6,20 @@ using UniversalTombLauncher.Native;
 
 namespace UniversalTombLauncher.Helpers
 {
+	/// <summary>
+	/// Helper class for simulating user input.
+	/// </summary>
 	internal static class InputHelper
 	{
 		private const int InputType_Mouse = 0;
 		private const int MouseLeft_Down = 0x0002;
 		private const int MouseLeft_Up = 0x0004;
 
+		/// <summary>
+		/// Simulates a mouse click on a specific point within a window's client area.
+		/// </summary>
+		/// <param name="hWnd">The handle of the window.</param>
+		/// <param name="clientPoint">The point within the window's client area where the click should occur.</param>
 		public static void ClickOnPoint(IntPtr hWnd, Point clientPoint)
 		{
 			Point cachedCursorPos = Cursor.Position;

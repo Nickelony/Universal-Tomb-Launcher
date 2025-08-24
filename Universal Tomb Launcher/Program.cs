@@ -69,7 +69,9 @@ namespace UniversalTombLauncher
 						return;
 				}
 				else
+				{
 					splashResult = PRESSED_CTRL;
+				}
 
 				if (splashResult == PRESSED_CTRL)
 				{
@@ -81,10 +83,12 @@ namespace UniversalTombLauncher
 							return; // Don't start the game
 					}
 
-					RunGame(validExecutable, true, debugMode);
+					RunGame(version, validExecutable, true, debugMode);
 				}
 				else if (splashResult == TIME_PASSED)
-					RunGame(validExecutable, false, debugMode);
+				{
+					RunGame(version, validExecutable, false, debugMode);
+				}
 			}
 			catch (Exception ex)
 			{
@@ -104,7 +108,10 @@ namespace UniversalTombLauncher
 				return form.ShowDialog();
 		}
 
-		private static void RunGame(string exeFilePath, bool setup = false, bool debug = false)
+		/// <summary>
+		/// Runs the game executable, creating a shortcut to it first to apply the launcher's icon.
+		/// </summary>
+		private static void RunGame(GameVersion version, string exeFilePath, bool setup = false, bool debug = false)
 		{
 			// We must create a shortcut of the game and run it instead to apply the icon of this launcher to the game window
 			string shortcutPath = CreateGameShortcut(exeFilePath, setup, debug);
@@ -126,14 +133,23 @@ namespace UniversalTombLauncher
 					catch { }
 				}
 
-				// Clean up the logs - move them to a sub-folder
-				string exeDirectory = Path.GetDirectoryName(exeFilePath);
-				LogCleaner.TidyLogFiles(exeDirectory);
+				if (version == GameVersion.TR4) // TR4 or TRNG
+				{
+					try
+					{
+						// Clean up the logs - move them to a sub-folder
+						string exeDirectory = Path.GetDirectoryName(exeFilePath);
+						LogCleaner.TidyLogFiles(exeDirectory);
+					}
+					catch { } // Failing to clean up logs is not critical
+				}
 			}
-			catch { }
 		}
 
-		/// <returns>Path to the shortcut.</returns>
+		/// <summary>
+		/// Creates a shortcut to the game executable with the icon of this launcher.
+		/// </summary>
+		/// <returns>The path to the created shortcut file.</returns>
 		private static string CreateGameShortcut(string exeFilePath, bool setup, bool debug)
 		{
 			string iconLocation = Assembly.GetExecutingAssembly().Location; // Target icon is the icon of this launcher

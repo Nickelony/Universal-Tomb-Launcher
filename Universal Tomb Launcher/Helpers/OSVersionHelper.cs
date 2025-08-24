@@ -2,10 +2,16 @@
 
 namespace UniversalTombLauncher.Helpers
 {
+	/// <summary>
+	/// Helper methods for determining the operating system version.
+	/// </summary>
 	internal static class OSVersionHelper
 	{
 		// Source: https://stackoverflow.com/a/37716518
 
+		/// <summary>
+		/// Gets the major version of the Windows operating system.
+		/// </summary>
 		public static uint WinMajorVersion
 		{
 			get
@@ -27,6 +33,9 @@ namespace UniversalTombLauncher.Helpers
 			}
 		}
 
+		/// <summary>
+		/// Gets the minor version of the Windows operating system.
+		/// </summary>
 		public static uint WinMinorVersion
 		{
 			get
@@ -48,6 +57,9 @@ namespace UniversalTombLauncher.Helpers
 			}
 		}
 
+		/// <summary>
+		/// Determines whether the operating system is Windows 8 or newer.
+		/// </summary>
 		public static bool IsWindowsEightOrNewer()
 		{
 			uint major = WinMajorVersion;
@@ -59,6 +71,10 @@ namespace UniversalTombLauncher.Helpers
 			return isWindows8 || isNewer;
 		}
 
+		/// <summary>
+		/// Tries to get a registry key value from the specified path.
+		/// </summary>
+		/// <returns><see langword="true" /> if the key was found; otherwise, <see langword="false" />. </returns>
 		private static bool TryGetRegistryKey(string path, string key, out dynamic value)
 		{
 			value = null;
