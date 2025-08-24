@@ -49,7 +49,7 @@ namespace UniversalTombLauncher.Utils
 		}
 
 		/// <summary>
-		/// Checks if the given file name matches known TRNG log file patterns.
+		/// Checks if the given file name matches known log file patterns.
 		/// </summary>
 		private static bool IsValidLogFile(string fileName)
 			=> fileName.EqualsAny(StringComparison.OrdinalIgnoreCase,
