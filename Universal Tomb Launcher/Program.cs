@@ -135,9 +135,13 @@ namespace UniversalTombLauncher
 
 				if (version == GameVersion.TR4) // TR4 or TRNG
 				{
-					// Clean up the logs - move them to a sub-folder
-					string exeDirectory = Path.GetDirectoryName(exeFilePath);
-					LogCleaner.TidyLogFiles(exeDirectory);
+					try
+					{
+						// Clean up the logs - move them to a sub-folder
+						string exeDirectory = Path.GetDirectoryName(exeFilePath);
+						LogCleaner.TidyLogFiles(exeDirectory);
+					}
+					catch { } // Failing to clean up logs is not critical
 				}
 			}
 		}
