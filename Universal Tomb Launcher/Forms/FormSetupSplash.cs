@@ -31,7 +31,7 @@ namespace UniversalTombLauncher.Forms
 		};
 
 		/// <summary>
-		/// Valid heights for the splash image.<para>Preview
+		/// Valid heights for the splash image.
 		/// </summary>
 		private readonly int[] ValidSplashHeight = new int[]
 		{
