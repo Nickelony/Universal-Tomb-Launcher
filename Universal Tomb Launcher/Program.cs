@@ -41,6 +41,7 @@ namespace UniversalTombLauncher
 
 					if (FileHelper.IsTRNGDirectory(programDirectory))
 					{
+						// TRNG specific message - the tomb4.exe file is missing or was deleted by antivirus software
 						message += "\n\n" +
 							"Some antivirus software may flag the game executable as a false positive.\n\n" +
 							"If your antivirus removed the tomb4.exe file, please restore it from quarantine or re-extract the archive.\n\n" +
