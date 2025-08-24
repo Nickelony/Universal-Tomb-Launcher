@@ -83,11 +83,11 @@ namespace UniversalTombLauncher
 							return; // Don't start the game
 					}
 
-					RunGame(validExecutable, true, debugMode);
+					RunGame(version, validExecutable, true, debugMode);
 				}
 				else if (splashResult == TIME_PASSED)
 				{
-					RunGame(validExecutable, false, debugMode);
+					RunGame(version, validExecutable, false, debugMode);
 				}
 			}
 			catch (Exception ex)
@@ -108,7 +108,7 @@ namespace UniversalTombLauncher
 				return form.ShowDialog();
 		}
 
-		private static void RunGame(string exeFilePath, bool setup = false, bool debug = false)
+		private static void RunGame(GameVersion version, string exeFilePath, bool setup = false, bool debug = false)
 		{
 			// We must create a shortcut of the game and run it instead to apply the icon of this launcher to the game window
 			string shortcutPath = CreateGameShortcut(exeFilePath, setup, debug);
@@ -130,9 +130,12 @@ namespace UniversalTombLauncher
 					catch { }
 				}
 
-				// Clean up the logs - move them to a sub-folder
-				string exeDirectory = Path.GetDirectoryName(exeFilePath);
-				LogCleaner.TidyLogFiles(exeDirectory);
+				if (version == GameVersion.TR4) // TR4 or TRNG
+				{
+					// Clean up the logs - move them to a sub-folder
+					string exeDirectory = Path.GetDirectoryName(exeFilePath);
+					LogCleaner.TidyLogFiles(exeDirectory);
+				}
 			}
 		}
 
