@@ -79,7 +79,8 @@ namespace UniversalTombLauncher.Utils
 
 			try
 			{
-				Process.Start(startInfo).WaitForExit();
+				using (var process = Process.Start(startInfo))
+					process?.WaitForExit();
 			}
 			catch { }
 
@@ -100,7 +101,8 @@ namespace UniversalTombLauncher.Utils
 
 			try
 			{
-				Process.Start(startInfo).WaitForExit();
+				using (var process = Process.Start(startInfo))
+					process?.WaitForExit();
 			}
 			catch { }
 		}
