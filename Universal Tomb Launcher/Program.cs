@@ -69,7 +69,9 @@ namespace UniversalTombLauncher
 						return;
 				}
 				else
+				{
 					splashResult = PRESSED_CTRL;
+				}
 
 				if (splashResult == PRESSED_CTRL)
 				{
@@ -84,7 +86,9 @@ namespace UniversalTombLauncher
 					RunGame(validExecutable, true, debugMode);
 				}
 				else if (splashResult == TIME_PASSED)
+				{
 					RunGame(validExecutable, false, debugMode);
+				}
 			}
 			catch (Exception ex)
 			{
@@ -130,10 +134,12 @@ namespace UniversalTombLauncher
 				string exeDirectory = Path.GetDirectoryName(exeFilePath);
 				LogCleaner.TidyLogFiles(exeDirectory);
 			}
-			catch { }
 		}
 
-		/// <returns>Path to the shortcut.</returns>
+		/// <summary>
+		/// Creates a shortcut to the game executable with the icon of this launcher.
+		/// </summary>
+		/// <returns>The path to the created shortcut file.</returns>
 		private static string CreateGameShortcut(string exeFilePath, bool setup, bool debug)
 		{
 			string iconLocation = Assembly.GetExecutingAssembly().Location; // Target icon is the icon of this launcher

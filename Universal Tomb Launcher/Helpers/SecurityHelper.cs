@@ -4,6 +4,9 @@ using System.Text;
 
 namespace UniversalTombLauncher.Helpers
 {
+	/// <summary>
+	/// Helper methods for dealing with security features like SmartScreen.
+	/// </summary>
 	internal static class SecurityHelper
 	{
 		/// <summary>

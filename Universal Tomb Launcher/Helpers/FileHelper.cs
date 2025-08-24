@@ -4,23 +4,47 @@ using UniversalTombLauncher.Enums;
 
 namespace UniversalTombLauncher.Helpers
 {
+	/// <summary>
+	/// Helper methods for file operations.
+	/// </summary>
 	internal static class FileHelper
 	{
+		/// <summary>
+		/// A list of supported game executable names.
+		/// </summary>
 		private static readonly string[] ValidGameExecutableNames = new string[]
 		{
-			"tombati.exe", "Tomb1Main.exe", "TR1X.exe", "TR2X.exe", "Tomb2.exe", "tomb3.exe", "tomb4.exe", "PCTomb5.exe", "TombEngine.exe"
+			"tombati.exe",
+			"Tomb1Main.exe",
+			"TR1X.exe",
+			"TR2X.exe",
+			"Tomb2.exe",
+			"tomb3.exe",
+			"tomb4.exe",
+			"PCTomb5.exe",
+			"TombEngine.exe"
 		};
 
+		/// <summary>
+		/// Platform-specific subdirectories to search for the game executable. Currently only used for Tomb Engine.
+		/// </summary>
 		private static readonly string[] PlatformSpecificDirectories = new string[]
 		{
 			"Bin\\x86", "Bin\\x64"
 		};
 
-		private static readonly string TemplateSpecificDirectory = "Engine";
+		/// <summary>
+		/// Template-specific subdirectory to search for the game executable.
+		/// </summary>
+		private const string TemplateSpecificDirectory = "Engine";
 
+		/// <summary>
+		/// Finds a valid game executable in the specified directory or its subdirectories.
+		/// </summary>
+		/// <returns>The full path to the valid game executable, or <see langword="null" /> if none is found.</returns>
 		public static string FindValidGameExecutable(string gameDirectory, out GameVersion version)
 		{
-			string result = string.Empty;
+			string result = null;
 			string platformSpecificDirectory = PlatformSpecificDirectories[Environment.Is64BitOperatingSystem ? 1 : 0];
 
 			string engineSubdirectory = Path.Combine(gameDirectory, TemplateSpecificDirectory);
@@ -51,15 +75,25 @@ namespace UniversalTombLauncher.Helpers
 			return result;
 		}
 
+		/// <summary>
+		/// Searches for a valid game executable in the specified directory.
+		/// </summary>
+		/// <returns>The full path to the valid game executable, or <see langword="null" /> if none is found.</returns>
 		private static string FindValidGameExecutable(string searchingDirectory)
 		{
 			string[] files = Directory.GetFiles(searchingDirectory, "*.exe", SearchOption.TopDirectoryOnly);
 			return Array.Find(files, x => IsValidGameExecutable(x));
 		}
 
+		/// <summary>
+		/// Checks if the given file path corresponds to a valid game executable.
+		/// </summary>
 		private static bool IsValidGameExecutable(string filePath)
 			=> Array.Exists(ValidGameExecutableNames, x => x.Equals(Path.GetFileName(filePath), StringComparison.OrdinalIgnoreCase));
 
+		/// <summary>
+		/// Determines the game version based on the executable file name.
+		/// </summary>
 		private static GameVersion GetGameVersionFromFile(string filePath)
 		{
 			string fileName = Path.GetFileNameWithoutExtension(filePath);

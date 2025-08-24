@@ -6,10 +6,16 @@ using UniversalTombLauncher.Native;
 
 namespace UniversalTombLauncher.Utils
 {
+	/// <summary>
+	/// Utility class for window-related operations.
+	/// </summary>
 	internal static class WindowUtils
 	{
 		// Source: https://stackoverflow.com/a/56514746
 
+		/// <summary>
+		/// Enables the specified accent effect on a window with the given accent color.
+		/// </summary>
 		public static void EnableAccent(IWin32Window window, ACCENT targetAccent, Color accentColor)
 		{
 			if (window == null)
@@ -34,6 +40,9 @@ namespace UniversalTombLauncher.Utils
 			}
 		}
 
+		/// <summary>
+		/// Converts a Color to a 32-bit ABGR value.
+		/// </summary>
 		private static uint ToAbgr(Color color)
 		{
 			return ((uint)color.A << 24)

@@ -10,25 +10,48 @@ using UniversalTombLauncher.Utils;
 
 namespace UniversalTombLauncher.Forms
 {
+	/// <summary>
+	/// A splash screen form that is shown on startup.
+	/// </summary>
 	internal partial class FormSetupSplash : Form
 	{
 		#region Fields
 
+		/// <summary>
+		/// The registry key where Windows personalization settings are stored.
+		/// </summary>
 		private const string PersonalizationRegistryKey = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
 
+		/// <summary>
+		/// Valid widths for the splash image.
+		/// </summary>
 		private readonly int[] ValidSplashWidths = new int[]
 		{
 			1024, 768, 512, 384
 		};
 
+		/// <summary>
+		/// Valid heights for the splash image.<para>Preview
+		/// </summary>
 		private readonly int[] ValidSplashHeight = new int[]
 		{
 			512, 384, 256
 		};
 
+		/// <summary>
+		/// The configuration instance which is loaded from the <c>splash.xml</c> file.
+		/// </summary>
 		private readonly Configuration _config = new Configuration().Load();
 
-		private bool _isPreviewMode;
+		/// <summary>
+		/// Whether the form is shown in preview mode.
+		/// <para>Preview mode allows exiting the form with the ESC key and does not auto-close.</para>
+		/// </summary>
+		private readonly bool _isPreviewMode;
+
+		/// <summary>
+		/// Whether the OS has acrylic effects enabled.
+		/// </summary>
 		private bool _supportsAcrylic;
 
 		#endregion Fields
@@ -38,10 +61,11 @@ namespace UniversalTombLauncher.Forms
 		public FormSetupSplash(bool isPreviewMode, string overrideMessage = null)
 		{
 			_isPreviewMode = isPreviewMode;
-			UpdatePersonalizationProperties();
+			LoadPersonalizationSettings();
 
 			InitializeComponent();
 
+			// Setup form properties
 			label_Message.ForeColor = ColorTranslator.FromHtml(_config.FontColor);
 			timer_Input.Interval = _config.DisplayTimeMilliseconds;
 
@@ -56,7 +80,10 @@ namespace UniversalTombLauncher.Forms
 				DisposeSplashImagePanel();
 		}
 
-		private void UpdatePersonalizationProperties()
+		/// <summary>
+		/// Loads the Windows personalization settings to determine if acrylic effects are supported.
+		/// </summary>
+		private void LoadPersonalizationSettings()
 		{
 			using (RegistryKey key = Registry.CurrentUser.OpenSubKey(PersonalizationRegistryKey))
 			{
@@ -70,6 +97,9 @@ namespace UniversalTombLauncher.Forms
 			}
 		}
 
+		/// <summary>
+		/// Initializes the splash image panel if the image is valid.
+		/// </summary>
 		private void InitializeSplashImage(string splashImagePath)
 		{
 			var bitmap = Image.FromFile(splashImagePath);
@@ -91,6 +121,9 @@ namespace UniversalTombLauncher.Forms
 			}
 		}
 
+		/// <summary>
+		/// Disposes of the splash image panel and adjusts the form size accordingly.
+		/// </summary>
 		private void DisposeSplashImagePanel()
 		{
 			panel_SplashImage.Dispose();
@@ -103,8 +136,12 @@ namespace UniversalTombLauncher.Forms
 
 		#region Overrides
 
+		/// <summary>
+		/// The constant for enabling drop shadow on the form.
+		/// </summary>
 		private const int CS_DROPSHADOW = 0x20000;
 
+		// Override the creation parameters to add a drop shadow to the form
 		protected override CreateParams CreateParams
 		{
 			get
@@ -120,6 +157,7 @@ namespace UniversalTombLauncher.Forms
 		{
 			base.OnHandleCreated(e);
 
+			// Enable acrylic effect if supported and configured
 			if (OSVersionHelper.WinMajorVersion >= 10 && _supportsAcrylic)
 				WindowUtils.EnableAccent(this, _config.WindowAccent, Color.Transparent);
 		}
@@ -144,6 +182,8 @@ namespace UniversalTombLauncher.Forms
 			{
 				timer_Input.Stop();
 				DialogResult = DialogResult.OK;
+
+				// Enters setup mode...
 			}
 
 			if (_isPreviewMode && e.KeyCode == Keys.Escape)
@@ -169,10 +209,13 @@ namespace UniversalTombLauncher.Forms
 		{
 			timer_Input.Stop();
 			DialogResult = DialogResult.Cancel;
+
+			// Launches the game...
 		}
 
 		private void Panel_Top_Paint(object sender, PaintEventArgs e)
 		{
+			// Draw gradient background for the top bar panel
 			Point start = GetGradientStartPoint(_config.TopBar_GradientFlow, panel_Top.ClientRectangle.Size);
 			Point end = GetGradientEndPoint(_config.TopBar_GradientFlow, panel_Top.ClientRectangle.Size);
 
@@ -187,6 +230,7 @@ namespace UniversalTombLauncher.Forms
 
 		private void Panel_Message_Paint(object sender, PaintEventArgs e)
 		{
+			// Draw gradient background for the message (bottom) panel
 			Point start = GetGradientStartPoint(_config.BottomBar_GradientFlow, panel_Bottom.ClientRectangle.Size);
 			Point end = GetGradientEndPoint(_config.BottomBar_GradientFlow, panel_Bottom.ClientRectangle.Size);
 
@@ -203,12 +247,18 @@ namespace UniversalTombLauncher.Forms
 
 		#region Other methods
 
+		/// <summary>
+		/// Forces a click on the window to ensure it is focused. This is a workaround for dgVoodoo's wrong initial window state issue.
+		/// </summary>
 		private void ForceClickOnWindow()
 		{
 			var windowCenterPoint = new Point(Width / 2, Height / 2);
 			InputHelper.ClickOnPoint(Handle, windowCenterPoint);
 		}
 
+		/// <summary>
+		/// Gets the start point for the gradient based on the specified flow direction and rectangle size.
+		/// </summary>
 		private Point GetGradientStartPoint(GradientFlow flow, Size rectSize)
 		{
 			switch (flow)
@@ -224,6 +274,9 @@ namespace UniversalTombLauncher.Forms
 			}
 		}
 
+		/// <summary>
+		/// Gets the end point for the gradient based on the specified flow direction and rectangle size.
+		/// </summary>
 		private Point GetGradientEndPoint(GradientFlow flow, Size rectSize)
 		{
 			switch (flow)
