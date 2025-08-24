@@ -108,6 +108,9 @@ namespace UniversalTombLauncher
 				return form.ShowDialog();
 		}
 
+		/// <summary>
+		/// Runs the game executable, creating a shortcut to it first to apply the launcher's icon.
+		/// </summary>
 		private static void RunGame(GameVersion version, string exeFilePath, bool setup = false, bool debug = false)
 		{
 			// We must create a shortcut of the game and run it instead to apply the icon of this launcher to the game window
