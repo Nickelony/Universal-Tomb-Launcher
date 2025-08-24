@@ -13,7 +13,7 @@ namespace UniversalTombLauncher.Utils
 	public static class LogCleaner
 	{
 		/// <summary>
-		/// Template for naming crash log files with a numbered identifier.
+		/// Name template for TRNG crash log files with a numbered identifier.
 		/// </summary>
 		private const string CrashLogFileNameTemplate = "Last_Crash_{0}.txt";
 
@@ -49,7 +49,7 @@ namespace UniversalTombLauncher.Utils
 		}
 
 		/// <summary>
-		/// Checks if the given file name matches known log file patterns.
+		/// Checks if the given file name matches known TRNG log file patterns.
 		/// </summary>
 		private static bool IsValidLogFile(string fileName)
 			=> fileName.EqualsAny(StringComparison.OrdinalIgnoreCase,
@@ -58,7 +58,7 @@ namespace UniversalTombLauncher.Utils
 			|| Path.GetExtension(fileName).Equals(".log", StringComparison.OrdinalIgnoreCase);
 
 		/// <summary>
-		/// Checks if the given file name matches the numbered crash log pattern.
+		/// Checks if the given file name matches the numbered TRNG crash log pattern.
 		/// </summary>
 		private static bool IsValidNumberedCrashLog(string fileName)
 			=> Regex.IsMatch(fileName, @"last_crash_\d+\.txt", RegexOptions.IgnoreCase);
