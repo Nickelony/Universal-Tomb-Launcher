@@ -14,7 +14,7 @@ namespace UniversalTombLauncher.Forms
 		/// </summary>
 		private const int WS_SYSMENU = 0x80000;
 
-		// Override the window creation parameters to remove the system menu (close button).
+		// Override the window creation parameters to remove the system menu (close button)
 		protected override CreateParams CreateParams
 		{
 			get
