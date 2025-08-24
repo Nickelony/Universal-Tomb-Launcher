@@ -64,6 +64,7 @@
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Helpers\InputHelper.cs" />
     <Compile Include="Helpers\OSVersionHelper.cs" />
+    <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Native\NativeClasses.cs" />
     <Compile Include="Native\NativeEnums.cs" />
     <Compile Include="Native\NativeInterfaces.cs" />

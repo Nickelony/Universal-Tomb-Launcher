@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -112,12 +111,20 @@ namespace UniversalTombLauncher
 
 			try
 			{
-				// Start the game and wait for it to exit
-				Process.Start(shortcutPath).WaitForExit();
-
+				SecurityHelper.RunWithBatch(shortcutPath);
+			}
+			catch { }
+			finally
+			{
 				// Delete the shortcut once the game is closed
 				if (File.Exists(shortcutPath))
-					File.Delete(shortcutPath);
+				{
+					try
+					{
+						File.Delete(shortcutPath);
+					}
+					catch { }
+				}
 
 				// Clean up the logs - move them to a sub-folder
 				string exeDirectory = Path.GetDirectoryName(exeFilePath);
