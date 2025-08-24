@@ -3,7 +3,6 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using UniversalTombLauncher.Enums;
 using UniversalTombLauncher.Forms;
 using UniversalTombLauncher.Helpers;
@@ -16,6 +15,7 @@ namespace UniversalTombLauncher
 		[STAThread]
 		private static void Main(string[] args)
 		{
+			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 
 			bool forceSetup = Array.Exists(args, x
@@ -36,7 +36,19 @@ namespace UniversalTombLauncher
 				string validExecutable = FileHelper.FindValidGameExecutable(programDirectory, out GameVersion version);
 
 				if (string.IsNullOrEmpty(validExecutable))
-					throw new ArgumentException("Couldn't find a valid game .exe file.");
+				{
+					string message = "Couldn't find a valid game executable.";
+
+					if (FileHelper.IsTRNGDirectory(programDirectory))
+					{
+						message += "\n\n" +
+							"Some antivirus software may flag the game executable as a false positive.\n\n" +
+							"If your antivirus removed the tomb4.exe file, please restore it from quarantine or re-extract the archive.\n\n" +
+							"If issues persist, please add an exception for the game folder in your antivirus software.";
+					}
+
+					throw new ArgumentException(message);
+				}
 
 				if (ProcessHelper.IsGameAlreadyRunning(version))
 				{
@@ -61,9 +73,7 @@ namespace UniversalTombLauncher
 						? "Launching game..."
 						: null;
 
-					Application.VisualStyleState = VisualStyleState.ClientAndNonClientAreasEnabled;
 					splashResult = ShowSplashScreen(isPreviewMode, overrideMessage);
-					Application.VisualStyleState = VisualStyleState.NonClientAreaEnabled;
 
 					if (isPreviewMode)
 						return;
@@ -118,7 +128,17 @@ namespace UniversalTombLauncher
 
 			try
 			{
-				SecurityHelper.RunWithBatch(shortcutPath);
+				int exitCode = SecurityHelper.RunWithBatch(shortcutPath);
+
+				if (version == GameVersion.TR4 && exitCode == 1)
+				{
+					// TR4 specific: Exit code 1 means the executable was quarantined or deleted by the antivirus
+					MessageBox.Show(
+						"The game unexpectedly closed due to an error.\n\n" +
+						"Some antivirus software may flag the game executable as a false positive.\n\n" +
+						"If your antivirus is blocking the game, please add an exception for it.",
+						"Game unexpectedly closed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
 			}
 			catch { }
 			finally

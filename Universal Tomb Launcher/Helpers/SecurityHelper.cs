@@ -36,7 +36,8 @@ namespace UniversalTombLauncher.Helpers
 		/// <summary>
 		/// Runs the game using a batch file wrapper.
 		/// </summary>
-		public static void RunWithBatch(string targetFilePath)
+		/// <returns>The exit code of the game process, or -1 if it could not be started.</returns>
+		public static int RunWithBatch(string targetFilePath)
 		{
 			string batchPath = null;
 
@@ -45,7 +46,7 @@ namespace UniversalTombLauncher.Helpers
 				batchPath = CreateLaunchBatch(targetFilePath);
 
 				if (string.IsNullOrEmpty(batchPath))
-					return;
+					return -1;
 
 				var startInfo = new ProcessStartInfo
 				{
@@ -55,9 +56,15 @@ namespace UniversalTombLauncher.Helpers
 				};
 
 				using (var process = Process.Start(startInfo))
+				{
 					process?.WaitForExit();
+					return process?.ExitCode ?? -1;
+				}
 			}
-			catch { }
+			catch
+			{
+				return -1;
+			}
 			finally
 			{
 				// Clean up batch file

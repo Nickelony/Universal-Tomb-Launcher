@@ -39,6 +39,26 @@ namespace UniversalTombLauncher.Helpers
 		private const string TemplateSpecificDirectory = "Engine";
 
 		/// <summary>
+		/// The name of the TRNG engine DLL file.
+		/// </summary>
+		private const string TombNextGenerationDllName = "Tomb_NextGeneration.dll";
+
+		/// <summary>
+		/// Checks if the specified directory is a TRNG directory by looking for the presence of <c>Tomb_NextGeneration.dll</c>.
+		/// </summary>
+		public static bool IsTRNGDirectory(string gameDirectory)
+		{
+			string engineSubdirectory = Path.Combine(gameDirectory, TemplateSpecificDirectory);
+
+			engineSubdirectory = Directory.Exists(engineSubdirectory)
+				? engineSubdirectory
+				: gameDirectory;
+
+			string dllPath = Path.Combine(engineSubdirectory, TombNextGenerationDllName);
+			return File.Exists(dllPath);
+		}
+
+		/// <summary>
 		/// Finds a valid game executable in the specified directory or its subdirectories.
 		/// </summary>
 		/// <returns>The full path to the valid game executable, or <see langword="null" /> if none is found.</returns>
