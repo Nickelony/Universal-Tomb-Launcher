@@ -43,9 +43,13 @@ namespace UniversalTombLauncher
 					{
 						// TRNG specific message - the tomb4.exe file is missing or was deleted by antivirus software
 						message += "\n\n" +
-							"Some antivirus software may flag the game executable as a false positive.\n\n" +
-							"If your antivirus removed the tomb4.exe file, please restore it from quarantine or re-extract the archive.\n\n" +
-							"If issues persist, please add an exception for the game folder in your antivirus software.";
+							"Common causes:\n" +
+							"- Your antivirus may have quarantined the file as a false positive\n" +
+							"- The file was accidentally deleted during extraction\n\n" +
+							"To resolve this:\n" +
+							"1. Check your antivirus quarantine/history and restore tomb4.exe if found\n" +
+							"2. If not found, re-extract the game archive\n" +
+							"3. Add the game folder to your antivirus exclusions to prevent future issues";
 					}
 
 					throw new ArgumentException(message);
@@ -135,10 +139,15 @@ namespace UniversalTombLauncher
 				{
 					// TR4 specific: Exit code 1 means the executable was quarantined or deleted by the antivirus
 					MessageBox.Show(
-						"The game unexpectedly closed due to an error.\n\n" +
-						"Some antivirus software may flag the game executable as a false positive.\n\n" +
-						"If your antivirus is blocking the game, please add an exception for it.",
-						"Game unexpectedly closed", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						"The game closed unexpectedly (Exit Code 1).\n\n" +
+						"Common causes:\n" +
+						"- The game crashed\n" +
+						"- The game was forcibly closed by the user\n" +
+						"- Your antivirus may have falsely blocked or quarantined the game executable\n\n" +
+						"If issues persist:\n" +
+						"1. Check your antivirus quarantine/history and restore tomb4.exe if found\n" +
+						"2. Add the game folder to your antivirus exclusions",
+						"Exit Code 1", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				}
 			}
 			catch { }
