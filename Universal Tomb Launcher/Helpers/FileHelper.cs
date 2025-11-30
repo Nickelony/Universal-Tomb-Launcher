@@ -18,6 +18,7 @@ namespace UniversalTombLauncher.Helpers
 			"Tomb1Main.exe",
 			"TR1X.exe",
 			"TR2X.exe",
+			"TRX.exe",
 			"Tomb2.exe",
 			"tomb3.exe",
 			"tomb4.exe",
@@ -127,6 +128,7 @@ namespace UniversalTombLauncher.Helpers
 				case "TOMB1MAIN": return GameVersion.Tomb1Main;
 				case "TR1X": return GameVersion.TR1X;
 				case "TR2X": return GameVersion.TR2X;
+				case "TRX": return GameVersion.TRX;
 				case "TOMB2": return GameVersion.TR2;
 				case "TOMB3": return GameVersion.TR3;
 				case "TOMB4": return GameVersion.TR4;

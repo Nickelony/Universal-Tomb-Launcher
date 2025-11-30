@@ -20,6 +20,7 @@ namespace UniversalTombLauncher.Helpers
 			Tomb1MainProcessName = "Tomb1Main",
 			TR1XProcessName = "TR1X",
 			TR2XProcessName = "TR2X",
+			TRXProcessName = "TRX",
 			TR2ProcessName = "Tomb2",
 			TR3ProcessName = "tomb3",
 			TR4ProcessName = "tomb4",
@@ -33,6 +34,7 @@ namespace UniversalTombLauncher.Helpers
 			Tomb1MainWndClassName = "SDL_app",
 			TR1XWndClassName = Tomb1MainWndClassName,
 			TR2XWndClassName = Tomb1MainWndClassName,
+			TRXWndClassName = Tomb1MainWndClassName,
 			TR2WndClassName = "Dude:TombRaiderII:DDWndClass",
 			TR3WndClassName = "Window Class", // Why...
 			TR4WndClassName = "MainGameWindow",
