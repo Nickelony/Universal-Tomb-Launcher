@@ -73,7 +73,7 @@ namespace UniversalTombLauncher.Helpers
 			=> GetConstValue<string>(version.ToString() + "WndClassName");
 
 		/// <summary>
-		/// Gets the value of a constant field from the <see cref="ProcessHelper" /> class using reflection.
+		/// Gets the value of a constant field from the <see cref="ProcessHelper"/> class using reflection.
 		/// </summary>
 		private static T GetConstValue<T>(string constName)
 		{
@@ -102,7 +102,7 @@ namespace UniversalTombLauncher.Helpers
 		}
 
 		/// <summary>
-		/// Gets the <see cref="Process" /> instance associated with the specified window handle.
+		/// Gets the <see cref="Process"/> instance associated with the specified window handle.
 		/// </summary>
 		private static Process GetProcessFromWindowHandle(IntPtr windowHandle)
 		{

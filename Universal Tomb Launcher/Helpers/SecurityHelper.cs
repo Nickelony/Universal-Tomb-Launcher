@@ -12,6 +12,8 @@ namespace UniversalTombLauncher.Helpers
 		/// <summary>
 		/// Creates a batch file that can be used to launch the game, potentially bypassing some SmartScreen issues.
 		/// </summary>
+		/// <param name="targetFilePath">The file path to the game executable to be launched.</param>
+		/// <returns>The file path to the created batch file, or <see langword="null"/> if it could not be created.</returns>
 		public static string CreateLaunchBatch(string targetFilePath)
 		{
 			try
@@ -36,8 +38,10 @@ namespace UniversalTombLauncher.Helpers
 		/// <summary>
 		/// Runs the game using a batch file wrapper.
 		/// </summary>
+		/// <param name="targetFilePath">The file path to the game executable to be launched.</param>
+		/// <param name="debug">Whether the launcher has been opened with the <c>-debug</c> argument, which should show the game's console window (if supported).</param>
 		/// <returns>The exit code of the game process, or -1 if it could not be started.</returns>
-		public static int RunWithBatch(string targetFilePath)
+		public static int RunWithBatch(string targetFilePath, bool debug = false)
 		{
 			string batchPath = null;
 
@@ -52,7 +56,7 @@ namespace UniversalTombLauncher.Helpers
 				{
 					FileName = batchPath,
 					UseShellExecute = true,
-					WindowStyle = ProcessWindowStyle.Hidden
+					WindowStyle = debug ? ProcessWindowStyle.Normal : ProcessWindowStyle.Hidden
 				};
 
 				using (var process = Process.Start(startInfo))

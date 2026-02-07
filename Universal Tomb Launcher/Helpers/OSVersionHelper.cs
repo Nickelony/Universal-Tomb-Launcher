@@ -74,7 +74,7 @@ namespace UniversalTombLauncher.Helpers
 		/// <summary>
 		/// Tries to get a registry key value from the specified path.
 		/// </summary>
-		/// <returns><see langword="true" /> if the key was found; otherwise, <see langword="false" />. </returns>
+		/// <returns><see langword="true"/> if the key was found; otherwise, <see langword="false"/>. </returns>
 		private static bool TryGetRegistryKey(string path, string key, out dynamic value)
 		{
 			value = null;
