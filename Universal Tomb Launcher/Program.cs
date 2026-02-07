@@ -128,8 +128,8 @@ namespace UniversalTombLauncher
 		/// </summary>
 		/// <param name="version">The version of the game being launched, used for version-specific handling.</param>
 		/// <param name="exeFilePath">The file path to the game executable to be launched.</param>
-		/// <param name="setup">Whether to include the <c>-setup</c> argument when launching the game, which forces the game to show its setup window on launch (if supported).</param>
-		/// <param name="debug">Whether to include the <c>-debug</c> argument when launching the game, which forces the game to show its console window on launch (if supported).</param>
+		/// <param name="setup">Whether to include the <c>-setup</c> argument when launching the game, which forces the game to show its setup window (if supported).</param>
+		/// <param name="debug">Whether to include the <c>-debug</c> argument when launching the game, which forces the game to show its console window (if supported).</param>
 		private static void RunGame(GameVersion version, string exeFilePath, bool setup = false, bool debug = false)
 		{
 			// We must create a shortcut of the game and run it instead to apply the icon of this launcher to the game window
@@ -184,8 +184,8 @@ namespace UniversalTombLauncher
 		/// Creates a shortcut to the game executable with the icon of this launcher.
 		/// </summary>
 		/// <param name="exeFilePath">The file path to the game executable.</param>
-		/// <param name="setup">Whether the shortcut should include the <c>-setup</c> argument to force the game to show its setup window on launch (if supported).</param>
-		/// <param name="debug">Whether the shortcut should include the <c>-debug</c> argument to show the game's console window on launch (if supported).</param>
+		/// <param name="setup">Whether the shortcut should include the <c>-setup</c> argument to force the game to show its setup window (if supported).</param>
+		/// <param name="debug">Whether the shortcut should include the <c>-debug</c> argument to show the game's console window (if supported).</param>
 		/// <returns>The path to the created shortcut file.</returns>
 		private static string CreateGameShortcut(string exeFilePath, bool setup, bool debug)
 		{
