@@ -62,7 +62,7 @@ namespace UniversalTombLauncher.Helpers
 		/// <summary>
 		/// Finds a valid game executable in the specified directory or its subdirectories.
 		/// </summary>
-		/// <returns>The full path to the valid game executable, or <see langword="null" /> if none is found.</returns>
+		/// <returns>The full path to the valid game executable, or <see langword="null"/> if none is found.</returns>
 		public static string FindValidGameExecutable(string gameDirectory, out GameVersion version)
 		{
 			string result = null;
@@ -99,7 +99,7 @@ namespace UniversalTombLauncher.Helpers
 		/// <summary>
 		/// Searches for a valid game executable in the specified directory.
 		/// </summary>
-		/// <returns>The full path to the valid game executable, or <see langword="null" /> if none is found.</returns>
+		/// <returns>The full path to the valid game executable, or <see langword="null"/> if none is found.</returns>
 		private static string FindValidGameExecutable(string searchingDirectory)
 		{
 			string[] files = Directory.GetFiles(searchingDirectory, "*.exe", SearchOption.TopDirectoryOnly);
