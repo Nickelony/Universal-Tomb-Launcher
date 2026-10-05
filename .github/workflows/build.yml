@@ -1,0 +1,49 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Nickelony edit here
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Windows Executable
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Install .NET Framework 4.0 Reference Assemblies
+        shell: pwsh
+        run: |
+          nuget install Microsoft.NETFramework.ReferenceAssemblies.net40 -Version 1.0.3 -OutputDirectory packages
+          
+          $source = "packages\Microsoft.NETFramework.ReferenceAssemblies.net40.1.0.3\build\.NETFramework\v4.0"
+          $target = "${env:ProgramFiles(x86)}\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0"
+          
+          New-Item -ItemType Directory -Force -Path $target
+          Copy-Item -Path "$source\*" -Destination $target -Recurse -Force
+          Write-Host "Assembly .NET 4.0 installati con successo in $target"
+
+      - name: Build Solution (Release)
+        run: msbuild "Universal Tomb Launcher.sln" /p:Configuration=Release /p:Platform="Any CPU"
+
+      - name: Prepare Staging and Zip
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path staging
+          Copy-Item -Path "Universal Tomb Launcher\bin\Release\*" -Destination "staging\" -Recurse
+          Compress-Archive -Path staging\* -DestinationPath Universal-Tomb-Launcher.zip
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: Universal-Tomb-Launcher.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
