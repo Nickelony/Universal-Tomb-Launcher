@@ -4,7 +4,7 @@ A modern, cross-platform Tomb Raider launcher for classic and modern engines (TR
 ![Preview](https://user-images.githubusercontent.com/20436882/142447710-0eff9ad3-de92-4019-bf76-f1b5418bda4f.png)
 
 # Main features
-- **Cross-Platform Support**: Runs natively on **Windows, Linux (including Steam Deck / SteamOS), and macOS** powered by .NET 8+ and SDL3;
+- **Cross-Platform Support**: Runs natively on **Windows, Linux (including Steam Deck / SteamOS), and macOS** powered by .NET 10+ and SDL3;
 - **Modern Engine Support**: Full out-of-the-box detection and execution for **TRX** (covering TR1, TR2, TR3), **TEN (Tomb Engine)**, and **Tomb1Main**;
 - **Classic Engine Support**: Fully compatible with original TR1–5 executables and dgVoodoo;
 - **Hardware-Accelerated Splash Screen**: Borderless window with smooth fade-in animation and customizable top/bottom gradient bars via `splash.xml`;
@@ -17,7 +17,7 @@ A modern, cross-platform Tomb Raider launcher for classic and modern engines (TR
 # Building and Publishing
 
 ### Requirements
-- [.NET 8.0 SDK](https://dotnet.microsoft.com/download) or newer.
+- [.NET 10.0 SDK](https://dotnet.microsoft.com/download) or newer.
 
 ### Build (Development)
 ```bash
