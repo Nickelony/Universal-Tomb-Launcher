@@ -27,7 +27,7 @@ dotnet build "Universal Tomb Launcher.sln"
 ### Publish Single-File Binaries
 
 **Windows (x64):**
-```bash
+```cmd
 dotnet publish "Universal Tomb Launcher/Universal Tomb Launcher.csproj" -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
 ```
 
@@ -35,6 +35,13 @@ dotnet publish "Universal Tomb Launcher/Universal Tomb Launcher.csproj" -c Relea
 ```bash
 dotnet publish "Universal Tomb Launcher/Universal Tomb Launcher.csproj" -c Release -r linux-x64 -p:PublishSingleFile=true --self-contained false
 ```
+
+**macOS (Apple Silicon):**
+```bash
+dotnet publish "Universal Tomb Launcher/Universal Tomb Launcher.csproj" -c Release -r osx-arm64 -p:PublishSingleFile=true --self-contained false
+```
+
+For Intel write `osx-x64`
 
 # Command Line Options
 - `-s` or `-setup`: Forces the game to launch directly into its setup configuration dialog.
