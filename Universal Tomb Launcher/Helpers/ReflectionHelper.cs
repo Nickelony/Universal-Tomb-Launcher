@@ -11,7 +11,7 @@ namespace UniversalTombLauncher.Helpers
 		/// <summary>
 		/// Gets a constant field from a specified type by its name.
 		/// </summary>
-		public static FieldInfo GetConstant(Type type, string name)
+		public static FieldInfo? GetConstant(Type type, string name)
 			=> Array.Find(type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy),
 				x => x.IsLiteral && !x.IsInitOnly && x.Name.Equals(name));
 	}

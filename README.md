@@ -1,42 +1,64 @@
 # Universal Tomb Launcher
-A universal Tomb Raider 1 / 2 / 3 / 4 / 5 launcher which is mainly used in the TombIDE project.
+A modern, cross-platform Tomb Raider launcher for classic and modern engines (TR1, TR2, TR3, TR4, TR5, TRX, and Tomb Engine / TEN), primarily used in the TombIDE project.
 
 ![Preview](https://user-images.githubusercontent.com/20436882/142447710-0eff9ad3-de92-4019-bf76-f1b5418bda4f.png)
 
 # Main features
-- Adds the ability to give your game a Jumbo icon (256x256);
-- Adds the ability to give your game a nice splash screen before launching it;
-- Adds an additional window into the TR4 setup where you can enable / disable the fullscreen border fix (Windows 8 or newer);
-- Gives you the possibility to kill a stuck TR process so you can re-launch the game without having to kill it manually using the task manager;
-- Cleans up TRNG logs after the game closes and puts them into a separate "logs" folder;
-- Supports Tomb Raider 1, 2, 3, 4 and 5;
-- Runs on Windows XP, Vista, 7, 8, 8.1, 10 and 11;
-- Is compatible with dgVoodoo.
+- **Cross-Platform Support**: Runs natively on **Windows, Linux (including Steam Deck / SteamOS), and macOS** powered by .NET 10+ and SDL3;
+- **Modern Engine Support**: Full out-of-the-box detection and execution for **TRX** (covering TR1, TR2, TR3), **TEN (Tomb Engine)**, and **Tomb1Main**;
+- **Classic Engine Support**: Fully compatible with original TR1–5 executables and dgVoodoo;
+- **Hardware-Accelerated Splash Screen**: Borderless window with smooth fade-in animation and customizable top/bottom gradient bars via `splash.xml`;
+- **Interactive Setup Dialog**: Press `CTRL` during the splash screen to open the engine's `-setup` dialog, or preview with `-p`;
+- **Process Manager**: Detects already running engine instances and prompts to terminate stuck processes cleanly;
+- **Log Cleaner**: Automatically tidies TRNG crash and session logs into a separate `logs` folder after the game closes;
+- **TR4 Border Fix (Windows 8+)**: Configurable compatibility fix for fullscreen borders in classic TR4;
+- **Jumbo Icon Support**: Applies custom 256x256 launcher icon to classic Windows game windows.
 
-# Extra features
-- Supports Acrylic Glass (Windows 10 or newer);
-- Detects light / dark system theme (Windows 10 or newer);
-- Has a new fade-in animation when opened.
+# Building and Publishing
+
+### Requirements
+- [.NET 10.0 SDK](https://dotnet.microsoft.com/download) or newer.
+
+### Build (Development)
+```bash
+dotnet build "Universal Tomb Launcher.sln"
+```
+
+### Publish Single-File Binaries
+
+**Windows (x64):**
+```cmd
+dotnet publish "Universal Tomb Launcher/Universal Tomb Launcher.csproj" -c Release -r win-x64 -p:PublishSingleFile=true --self-contained false
+```
+
+**Linux (x64 / Steam Deck):**
+```bash
+dotnet publish "Universal Tomb Launcher/Universal Tomb Launcher.csproj" -c Release -r linux-x64 -p:PublishSingleFile=true --self-contained false
+```
+
+**macOS (Apple Silicon):**
+```bash
+dotnet publish "Universal Tomb Launcher/Universal Tomb Launcher.csproj" -c Release -r osx-arm64 -p:PublishSingleFile=true --self-contained false
+```
+
+For Intel write `osx-x64`
+
+# Command Line Options
+- `-s` or `-setup`: Forces the game to launch directly into its setup configuration dialog.
+- `-p` or `-preview`: Opens the splash screen in preview mode (press `ESC` to exit).
+- `-d` or `-debug`: Launches the game with console/debug mode enabled (if supported by the engine).
 
 # Screenshots
-Dark OS theme (Rounded corners for Windows 11 only):
+Dark theme:
 
 ![Dark](https://user-images.githubusercontent.com/20436882/142443882-d7c7287d-1216-465f-8657-be050266931c.png)
 
-Light OS theme (Rounded corners for Windows 11 only):
+Light theme:
 
 ![Light](https://user-images.githubusercontent.com/20436882/142443909-8a55f031-ff5a-4040-98df-173bbad612a3.png)
 
-Non-Acrylic:
-
-![Flat](https://user-images.githubusercontent.com/20436882/142443963-e853c0e5-9c8f-464b-9bed-a4645c22a9d5.png)
-
-Game still running in background message:
+Game already running prompt:
 
 ![Message](https://user-images.githubusercontent.com/20436882/142454242-a749c79e-4751-49f9-88da-0fc41d31ae3a.png)
-
-Extra setup window (TR4 only):
-
-![Fix](https://user-images.githubusercontent.com/20436882/142444048-2e56e25d-de67-4d1d-921c-e28c18f08c28.png)
 
 Splash screen image from Delca's custom level: https://www.trle.net/sc/levelfeatures.php?lid=3379

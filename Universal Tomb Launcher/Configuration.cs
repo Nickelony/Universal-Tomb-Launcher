@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.IO;
+﻿using System.IO;
 using System.Xml.Serialization;
 using UniversalTombLauncher.Enums;
 using UniversalTombLauncher.Native;
@@ -22,21 +21,26 @@ namespace UniversalTombLauncher
 		public string BottomBar_GradientEndColor { get; set; } = "#202020";
 		public int BottomBar_GradientEndAlpha { get; set; } = 192;
 
-		public string FontColor { get; set; } = ColorTranslator.ToHtml(Color.White);
+		public string FontColor { get; set; } = "#FFFFFF";
 
 		public int DisplayTimeMilliseconds { get; set; } = 1500;
 
-		public string DefaultPath => Directory.Exists("Engine") ? @"Engine\splash.xml" : "splash.xml";
+		public string DefaultPath => Directory.Exists("Engine")
+			? Path.Combine("Engine", "splash.xml")
+			: "splash.xml";
 
-		public Configuration Load(Stream stream)
+		public Configuration? Load(Stream stream)
 			=> new XmlSerializer(GetType()).Deserialize(stream) as Configuration;
 
 		public Configuration Load(string filePath)
 		{
 			try
 			{
+				if (!File.Exists(filePath))
+					return new Configuration();
+
 				using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
-					return Load(stream);
+					return Load(stream) ?? new Configuration();
 			}
 			catch
 			{

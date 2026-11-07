@@ -1,23 +1,20 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Text;
-using System.Windows.Forms;
 using UniversalTombLauncher.Enums;
-using UniversalTombLauncher.Forms;
 using UniversalTombLauncher.Helpers;
+using UniversalTombLauncher.UI;
 using UniversalTombLauncher.Utils;
 
 namespace UniversalTombLauncher
 {
 	internal static class Program
 	{
-		[STAThread]
 		private static void Main(string[] args)
 		{
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
-
 			bool forceSetup = Array.Exists(args, x
 				=> x.Equals("-s", StringComparison.OrdinalIgnoreCase)
 				|| x.Equals("-setup", StringComparison.OrdinalIgnoreCase));
@@ -32,8 +29,8 @@ namespace UniversalTombLauncher
 
 			try
 			{
-				string programDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-				string validExecutable = FileHelper.FindValidGameExecutable(programDirectory, out GameVersion version);
+				string programDirectory = AppContext.BaseDirectory;
+				string? validExecutable = FileHelper.FindValidGameExecutable(programDirectory, out GameVersion version);
 
 				if (string.IsNullOrEmpty(validExecutable))
 				{
@@ -41,7 +38,6 @@ namespace UniversalTombLauncher
 
 					if (FileHelper.IsTRNGDirectory(programDirectory))
 					{
-						// TRNG specific message - the tomb4.exe file is missing or was deleted by antivirus software
 						message += "\n\n" +
 							"Common causes:\n" +
 							"- Your antivirus may have quarantined the file as a false positive\n" +
@@ -52,97 +48,101 @@ namespace UniversalTombLauncher
 							"3. Add the game folder to your antivirus exclusions to prevent future issues";
 					}
 
-					throw new ArgumentException(message);
+					DialogHelper.ShowError(message);
+					return;
 				}
 
 				if (ProcessHelper.IsGameAlreadyRunning(version))
 				{
-					DialogResult result = MessageBox.Show(
+					bool closeRunning = DialogHelper.ShowYesNo(
 						"An instance of the same game engine is already running.\n" +
 						"Would you like to close the already running game instance and run the new one?",
-						"Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+						"Warning");
 
-					if (result == DialogResult.Yes)
-						ProcessHelper.FindGameProcess(version)?.Kill();
+					if (closeRunning)
+					{
+						try
+						{
+							ProcessHelper.FindGameProcess(version)?.Kill();
+						}
+						catch { }
+					}
 					else
+					{
 						return;
+					}
 				}
 
-				DialogResult splashResult;
-				const DialogResult PRESSED_CTRL = DialogResult.OK;
-				const DialogResult TIME_PASSED = DialogResult.Cancel;
+				SplashResult splashResult = SplashResult.Launch;
 
 				if (!forceSetup)
 				{
-					string overrideMessage = version == GameVersion.Tomb1Main || version == GameVersion.TR1X || version == GameVersion.TR2X || version == GameVersion.TRX
+					string? overrideMessage = version == GameVersion.Tomb1Main || version == GameVersion.TR1X || version == GameVersion.TR2X || version == GameVersion.TRX
 						? "Launching game..."
 						: null;
 
-					splashResult = ShowSplashScreen(isPreviewMode, overrideMessage);
+					splashResult = SplashWindow.Show(isPreviewMode, overrideMessage);
 
-					if (isPreviewMode)
+					if (isPreviewMode || splashResult == SplashResult.Exit)
 						return;
 				}
 				else
 				{
-					splashResult = PRESSED_CTRL;
+					splashResult = SplashResult.Setup;
 				}
 
-				if (splashResult == PRESSED_CTRL)
+				if (splashResult == SplashResult.Setup)
 				{
-					if (OSVersionHelper.IsWindowsEightOrNewer() && version == GameVersion.TR4)
+					if (OperatingSystem.IsWindows() && OSVersionHelper.IsWindowsEightOrNewer() && version == GameVersion.TR4)
 					{
-						DialogResult setupResult = ShowExtraSettingsSetup();
-
-						if (setupResult == DialogResult.Cancel)
+						bool proceed = DialogHelper.ShowExtraSettingsSetup();
+						if (!proceed)
 							return; // Don't start the game
 					}
 
 					RunGame(version, validExecutable, true, debugMode);
 				}
-				else if (splashResult == TIME_PASSED)
+				else if (splashResult == SplashResult.Launch)
 				{
 					RunGame(version, validExecutable, false, debugMode);
 				}
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				DialogHelper.ShowError(ex.Message, "Error");
 			}
 		}
 
-		private static DialogResult ShowSplashScreen(bool previewMode = false, string overrideMessage = null)
-		{
-			using (var form = new FormSetupSplash(previewMode, overrideMessage))
-				return form.ShowDialog();
-		}
-
-		private static DialogResult ShowExtraSettingsSetup()
-		{
-			using (var form = new FormExtraSettings())
-				return form.ShowDialog();
-		}
-
 		/// <summary>
-		/// Runs the game executable, creating a shortcut to it first to apply the launcher's icon.
+		/// Runs the game executable.
 		/// </summary>
-		/// <param name="version">The version of the game being launched, used for version-specific handling.</param>
-		/// <param name="exeFilePath">The file path to the game executable to be launched.</param>
-		/// <param name="setup">Whether to include the <c>-setup</c> argument when launching the game, which forces the game to show its setup window (if supported).</param>
-		/// <param name="debug">Whether to include the <c>-debug</c> argument when launching the game, which forces the game to show its console window (if supported).</param>
 		private static void RunGame(GameVersion version, string exeFilePath, bool setup = false, bool debug = false)
 		{
-			// We must create a shortcut of the game and run it instead to apply the icon of this launcher to the game window
-			string shortcutPath = CreateGameShortcut(exeFilePath, setup, debug);
+			string? shortcutPath = null;
+			int exitCode = -1;
 
 			try
 			{
-				int exitCode = SecurityHelper.RunWithBatch(shortcutPath, debug);
+				if (OperatingSystem.IsWindows() && (version == GameVersion.TR4 || version == GameVersion.TR1 || version == GameVersion.TR2 || version == GameVersion.TR3 || version == GameVersion.TR5))
+				{
+					try
+					{
+						shortcutPath = CreateGameShortcut(exeFilePath, setup, debug);
+						exitCode = SecurityHelper.RunWithBatch(shortcutPath, debug);
+					}
+					catch
+					{
+						exitCode = LaunchDirectProcess(exeFilePath, setup, debug);
+					}
+				}
+				else
+				{
+					exitCode = LaunchDirectProcess(exeFilePath, setup, debug);
+				}
 
 				if (version == GameVersion.TR4 && exitCode == 1)
 				{
-					// TR4 specific: Exit code 1 means the executable was quarantined or deleted by the antivirus
-					MessageBox.Show(
+					DialogHelper.ShowWarning(
 						"The game closed unexpectedly (Exit Code 1).\n\n" +
 						"Common causes:\n" +
 						"- The game crashed\n" +
@@ -151,14 +151,16 @@ namespace UniversalTombLauncher
 						"If issues persist:\n" +
 						"1. Check your antivirus quarantine/history and restore tomb4.exe if found\n" +
 						"2. Add the game folder to your antivirus exclusions",
-						"Exit Code 1", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+						"Exit Code 1");
 				}
 			}
-			catch { }
+			catch (Exception ex)
+			{
+				DialogHelper.ShowError($"Failed to launch the game:\n{ex.Message}");
+			}
 			finally
 			{
-				// Delete the shortcut once the game is closed
-				if (File.Exists(shortcutPath))
+				if (!string.IsNullOrEmpty(shortcutPath) && File.Exists(shortcutPath))
 				{
 					try
 					{
@@ -167,29 +169,56 @@ namespace UniversalTombLauncher
 					catch { }
 				}
 
-				if (version == GameVersion.TR4) // TR4 or TRNG
+				if (version == GameVersion.TR4)
 				{
 					try
 					{
-						// Clean up the logs - move them to a sub-folder
-						string exeDirectory = Path.GetDirectoryName(exeFilePath);
-						LogCleaner.TidyLogFiles(exeDirectory);
+						string? exeDirectory = Path.GetDirectoryName(exeFilePath);
+						if (!string.IsNullOrEmpty(exeDirectory))
+							LogCleaner.TidyLogFiles(exeDirectory);
 					}
-					catch { } // Failing to clean up logs is not critical
+					catch { }
 				}
 			}
 		}
 
 		/// <summary>
-		/// Creates a shortcut to the game executable with the icon of this launcher.
+		/// Launches the game process directly using Process.Start.
 		/// </summary>
-		/// <param name="exeFilePath">The file path to the game executable.</param>
-		/// <param name="setup">Whether the shortcut should include the <c>-setup</c> argument to force the game to show its setup window (if supported).</param>
-		/// <param name="debug">Whether the shortcut should include the <c>-debug</c> argument to show the game's console window (if supported).</param>
-		/// <returns>The path to the created shortcut file.</returns>
+		private static int LaunchDirectProcess(string exeFilePath, bool setup, bool debug)
+		{
+			string? workingDir = Path.GetDirectoryName(exeFilePath);
+			if (string.IsNullOrEmpty(workingDir))
+				workingDir = AppContext.BaseDirectory;
+
+			var startInfo = new ProcessStartInfo
+			{
+				FileName = exeFilePath,
+				WorkingDirectory = workingDir,
+				UseShellExecute = false
+			};
+
+			if (setup)
+				startInfo.ArgumentList.Add("-setup");
+
+			if (debug)
+				startInfo.ArgumentList.Add("-debug");
+
+			using var process = Process.Start(startInfo);
+			if (process == null)
+				return -1;
+
+			process.WaitForExit();
+			return process.ExitCode;
+		}
+
+		/// <summary>
+		/// Creates a shortcut to the game executable with the icon of this launcher on Windows.
+		/// </summary>
+		[SupportedOSPlatform("windows")]
 		private static string CreateGameShortcut(string exeFilePath, bool setup, bool debug)
 		{
-			string iconLocation = Assembly.GetExecutingAssembly().Location; // Target icon is the icon of this launcher
+			string iconLocation = Environment.ProcessPath ?? Path.Combine(AppContext.BaseDirectory, "launch.exe");
 
 			var argumentsBuilder = new StringBuilder();
 

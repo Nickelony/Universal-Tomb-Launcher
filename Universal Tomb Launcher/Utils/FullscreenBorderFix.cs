@@ -1,14 +1,17 @@
-﻿using Microsoft.Win32;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Versioning;
+using Microsoft.Win32;
 
 namespace UniversalTombLauncher.Utils
 {
 	/// <summary>
 	/// Helper methods for installing or uninstalling the Tomb Raider 4 fullscreen border fix.
 	/// </summary>
+	[SupportedOSPlatform("windows")]
 	public static class FullscreenBorderFix
 	{
 		/// <summary>
@@ -21,18 +24,19 @@ namespace UniversalTombLauncher.Utils
 		/// </summary>
 		public static bool IsBorderFixInstalled()
 		{
-			string displayName;
+			if (!OperatingSystem.IsWindows())
+				return false;
+
 			string registryKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall";
 
-			using (RegistryKey key = Registry.LocalMachine.OpenSubKey(registryKey))
+			using (RegistryKey? key = Registry.LocalMachine.OpenSubKey(registryKey))
 			{
 				if (key != null)
 				{
-					foreach (RegistryKey subKey in key.GetSubKeyNames().Select(keyName => key.OpenSubKey(keyName)))
+					foreach (string keyName in key.GetSubKeyNames())
 					{
-						displayName = (string)subKey.GetValue("DisplayName");
-
-						if (displayName != null && displayName == TR4PatchName)
+						using RegistryKey? subKey = key.OpenSubKey(keyName);
+						if (subKey != null && subKey.GetValue("DisplayName") is string displayName && displayName == TR4PatchName)
 							return true;
 					}
 				}
@@ -40,15 +44,14 @@ namespace UniversalTombLauncher.Utils
 
 			registryKey = @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall";
 
-			using (RegistryKey key = Registry.LocalMachine.OpenSubKey(registryKey))
+			using (RegistryKey? key = Registry.LocalMachine.OpenSubKey(registryKey))
 			{
 				if (key != null)
 				{
-					foreach (RegistryKey subKey in key.GetSubKeyNames().Select(keyName => key.OpenSubKey(keyName)))
+					foreach (string keyName in key.GetSubKeyNames())
 					{
-						displayName = (string)subKey.GetValue("DisplayName");
-
-						if (displayName != null && displayName == TR4PatchName)
+						using RegistryKey? subKey = key.OpenSubKey(keyName);
+						if (subKey != null && subKey.GetValue("DisplayName") is string displayName && displayName == TR4PatchName)
 							return true;
 					}
 				}
@@ -62,13 +65,20 @@ namespace UniversalTombLauncher.Utils
 		/// </summary>
 		public static void InstallBorderFix()
 		{
+			if (!OperatingSystem.IsWindows())
+				return;
+
 			string sdbFilePath = Path.Combine(Path.GetTempPath(), "tr4-border-fix.sdb");
+
+			Stream? stream = Assembly.GetExecutingAssembly()
+				.GetManifestResourceStream("UniversalTombLauncher.Patches.tr4-border-fix.sdb");
+
+			if (stream == null)
+				return;
 
 			using (FileStream fileStream = File.Create(sdbFilePath))
 			{
-				Assembly.GetExecutingAssembly()
-					.GetManifestResourceStream("UniversalTombLauncher.Patches.tr4-border-fix.sdb")
-					.CopyTo(fileStream);
+				stream.CopyTo(fileStream);
 			}
 
 			var startInfo = new ProcessStartInfo
@@ -79,13 +89,19 @@ namespace UniversalTombLauncher.Utils
 
 			try
 			{
-				using (var process = Process.Start(startInfo))
-					process?.WaitForExit();
+				using var process = Process.Start(startInfo);
+				process?.WaitForExit();
 			}
 			catch { }
 
 			if (File.Exists(sdbFilePath))
-				File.Delete(sdbFilePath);
+			{
+				try
+				{
+					File.Delete(sdbFilePath);
+				}
+				catch { }
+			}
 		}
 
 		/// <summary>
@@ -93,6 +109,9 @@ namespace UniversalTombLauncher.Utils
 		/// </summary>
 		public static void UninstallBorderFix()
 		{
+			if (!OperatingSystem.IsWindows())
+				return;
+
 			var startInfo = new ProcessStartInfo
 			{
 				FileName = "sdbinst.exe",
@@ -101,8 +120,8 @@ namespace UniversalTombLauncher.Utils
 
 			try
 			{
-				using (var process = Process.Start(startInfo))
-					process?.WaitForExit();
+				using var process = Process.Start(startInfo);
+				process?.WaitForExit();
 			}
 			catch { }
 		}

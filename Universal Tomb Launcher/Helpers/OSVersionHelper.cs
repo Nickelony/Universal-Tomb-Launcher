@@ -1,14 +1,15 @@
-﻿using Microsoft.Win32;
+﻿using System;
+using System.Runtime.Versioning;
+using Microsoft.Win32;
 
 namespace UniversalTombLauncher.Helpers
 {
 	/// <summary>
-	/// Helper methods for determining the operating system version.
+	/// Helper methods for determining the operating system version on Windows.
 	/// </summary>
+	[SupportedOSPlatform("windows")]
 	internal static class OSVersionHelper
 	{
-		// Source: https://stackoverflow.com/a/37716518
-
 		/// <summary>
 		/// Gets the major version of the Windows operating system.
 		/// </summary>
@@ -16,16 +17,18 @@ namespace UniversalTombLauncher.Helpers
 		{
 			get
 			{
-				// Windows 10 and above solution
-				if (TryGetRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentMajorVersionNumber", out dynamic major))
-					return (uint)major;
-
-				// Windows 8 and below solution
-				if (!TryGetRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentVersion", out dynamic version))
+				if (!OperatingSystem.IsWindows())
 					return 0;
 
-				string[] versionParts = ((string)version).Split('.');
+				// Windows 10 and above solution
+				if (TryGetRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentMajorVersionNumber", out object? major) && major is int majorInt)
+					return (uint)majorInt;
 
+				// Windows 8 and below solution
+				if (!TryGetRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentVersion", out object? version) || version is not string versionStr)
+					return 0;
+
+				string[] versionParts = versionStr.Split('.');
 				if (versionParts.Length != 2)
 					return 0;
 
@@ -40,16 +43,18 @@ namespace UniversalTombLauncher.Helpers
 		{
 			get
 			{
-				// Windows 10 and above solution
-				if (TryGetRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentMinorVersionNumber", out dynamic minor))
-					return (uint)minor;
-
-				// Windows 8 and below solution
-				if (!TryGetRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentVersion", out dynamic version))
+				if (!OperatingSystem.IsWindows())
 					return 0;
 
-				string[] versionParts = ((string)version).Split('.');
+				// Windows 10 and above solution
+				if (TryGetRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentMinorVersionNumber", out object? minor) && minor is int minorInt)
+					return (uint)minorInt;
 
+				// Windows 8 and below solution
+				if (!TryGetRegistryKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion", "CurrentVersion", out object? version) || version is not string versionStr)
+					return 0;
+
+				string[] versionParts = versionStr.Split('.');
 				if (versionParts.Length != 2)
 					return 0;
 
@@ -62,6 +67,9 @@ namespace UniversalTombLauncher.Helpers
 		/// </summary>
 		public static bool IsWindowsEightOrNewer()
 		{
+			if (!OperatingSystem.IsWindows())
+				return false;
+
 			uint major = WinMajorVersion;
 			uint minor = WinMinorVersion;
 
@@ -74,21 +82,18 @@ namespace UniversalTombLauncher.Helpers
 		/// <summary>
 		/// Tries to get a registry key value from the specified path.
 		/// </summary>
-		/// <returns><see langword="true"/> if the key was found; otherwise, <see langword="false"/>. </returns>
-		private static bool TryGetRegistryKey(string path, string key, out dynamic value)
+		private static bool TryGetRegistryKey(string path, string key, out object? value)
 		{
 			value = null;
 
 			try
 			{
-				using (RegistryKey rk = Registry.LocalMachine.OpenSubKey(path))
-				{
-					if (rk == null)
-						return false;
+				using RegistryKey? rk = Registry.LocalMachine.OpenSubKey(path);
+				if (rk == null)
+					return false;
 
-					value = rk.GetValue(key);
-					return value != null;
-				}
+				value = rk.GetValue(key);
+				return value != null;
 			}
 			catch
 			{
