@@ -33,7 +33,7 @@ namespace UniversalTombLauncher.Utils
 
 				if (IsValidLogFile(fileName))
 				{
-					string destPath = Path.Combine(logsDirectory, Path.GetFileName(file));
+					string destPath = Path.Combine(logsDirectory, fileName);
 					MoveFileEx(file, destPath, true);
 				}
 				else if (IsValidNumberedCrashLog(fileName))
@@ -76,12 +76,16 @@ namespace UniversalTombLauncher.Utils
 
 			MoveFileEx(logFile, destPath, true);
 
-			string memFilePath = Path.Combine(Path.GetDirectoryName(logFile), Path.GetFileNameWithoutExtension(logFile) + ".mem");
-
-			if (File.Exists(memFilePath))
+			string? dir = Path.GetDirectoryName(logFile);
+			if (dir != null)
 			{
-				destPath = Path.Combine(logsDirectory, Path.GetFileNameWithoutExtension(logFileName) + ".mem");
-				MoveFileEx(memFilePath, destPath, true);
+				string memFilePath = Path.Combine(dir, Path.GetFileNameWithoutExtension(logFile) + ".mem");
+
+				if (File.Exists(memFilePath))
+				{
+					destPath = Path.Combine(logsDirectory, Path.GetFileNameWithoutExtension(logFileName) + ".mem");
+					MoveFileEx(memFilePath, destPath, true);
+				}
 			}
 		}
 
@@ -106,7 +110,7 @@ namespace UniversalTombLauncher.Utils
 					takenNumbers.Add(id);
 			}
 
-			return takenNumbers.Max() + 1;
+			return takenNumbers.Count > 0 ? takenNumbers.Max() + 1 : 1;
 		}
 
 		/// <summary>
